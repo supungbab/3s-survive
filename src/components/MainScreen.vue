@@ -203,9 +203,9 @@ onMounted(async () => {
       </div>
 
       <!-- Best score -->
-      <div v-if="bestScore > 0" class="score-badge">
-        <span class="score-badge__label">최고 점수</span>
-        <span class="score-badge__value">{{ bestScore }}<span class="score-badge__unit">점</span></span>
+      <div v-if="bestScore > 0" class="best-score">
+        <span class="best-score__label">BEST</span>
+        <span class="best-score__value">{{ bestScore }}</span>
       </div>
 
       <div v-else class="first-play">첫 도전을 시작하세요!</div>
@@ -968,35 +968,24 @@ onMounted(async () => {
   color: #8a8880;
 }
 
-/* ─── Score Badge ─── */
-.score-badge {
+/* ─── Best Score ─── */
+.best-score {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 20px;
-  background: var(--arc-surface);
-  border: 1px solid var(--arc-surface-light);
-  border-radius: 4px;
+  align-items: baseline;
+  gap: 8px;
 }
 
-.score-badge__label {
-  font-size: 13px;
-  color: var(--arc-muted);
+.best-score__label {
+  font-size: 11px;
+  color: var(--px-green-dim);
+  letter-spacing: 2px;
 }
 
-.score-badge__value {
-  font-size: 22px;
+.best-score__value {
+  font-size: 20px;
   font-weight: 700;
-  color: var(--px-green-bright);
-  text-shadow: 0 0 16px rgba(57, 255, 20, 0.3);
-}
-
-.score-badge__unit {
-  font-size: 14px;
-  font-weight: 400;
   color: var(--px-green);
-  margin-left: 2px;
-  opacity: 0.7;
+  text-shadow: 0 0 12px var(--px-green-glow);
 }
 
 .first-play {
