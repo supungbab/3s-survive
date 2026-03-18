@@ -7,6 +7,14 @@
 
 ---
 
+## 0. Icon Resource
+
+- **Pixel Art Icons**: https://pixelarticons.com/
+  - 24x24 SVG 픽셀아트 아이콘 라이브러리
+  - 버튼 아이콘 등 UI 픽셀아트 아이콘 소스로 활용
+
+---
+
 ## 1. Design Tokens
 
 ### Pixel Green (Primary UI)

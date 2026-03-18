@@ -23,7 +23,7 @@ const home = usePressable(() => emit('home'))
 
       <!-- Header -->
       <div class="result-header">
-        <span class="pixel-skull"></span>
+        <svg class="pixel-skull" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="0" width="8" height="2" fill="currentColor"/><rect x="6" y="2" width="12" height="2" fill="currentColor"/><rect x="4" y="4" width="7" height="4" fill="currentColor"/><rect x="13" y="4" width="7" height="4" fill="currentColor"/><rect x="4" y="8" width="4" height="2" fill="currentColor"/><rect x="16" y="8" width="4" height="2" fill="currentColor"/><rect x="4" y="10" width="7" height="2" fill="currentColor"/><rect x="13" y="10" width="7" height="2" fill="currentColor"/><rect x="4" y="12" width="7" height="6" fill="currentColor"/><rect x="13" y="12" width="7" height="6" fill="currentColor"/><rect x="4" y="18" width="16" height="2" fill="currentColor"/><rect x="2" y="20" width="20" height="4" fill="currentColor"/></svg>
         <div class="result-label">GAME OVER</div>
       </div>
 
@@ -120,28 +120,16 @@ const home = usePressable(() => emit('home'))
 
 .pixel-skull {
   display: block;
-  width: 3px;
-  height: 3px;
-  background: transparent;
-  transform: translate(-8px, -5px);
-  box-shadow:
-    /* top row */
-    3px 0 0 #ff3b5c, 6px 0 0 #ff3b5c, 9px 0 0 #ff3b5c, 12px 0 0 #ff3b5c,
-    /* eyes row */
-    0 3px 0 #ff3b5c, 3px 3px 0 #ff3b5c, 6px 3px 0 #0a0a0c, 9px 3px 0 #ff3b5c,
-    12px 3px 0 #0a0a0c, 15px 3px 0 #ff3b5c,
-    /* nose */
-    0 6px 0 #ff3b5c, 3px 6px 0 #ff3b5c, 6px 6px 0 #ff3b5c,
-    9px 6px 0 #ff3b5c, 12px 6px 0 #ff3b5c, 15px 6px 0 #ff3b5c,
-    /* mouth */
-    3px 9px 0 #cc2244, 6px 9px 0 #cc2244, 9px 9px 0 #cc2244, 12px 9px 0 #cc2244;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
+  color: var(--arc-danger);
 }
 
 .result-label {
   font-size: 18px;
   font-weight: 900;
-  color: #ff3b5c;
+  color: var(--arc-danger);
   letter-spacing: 6px;
   text-shadow: 0 0 16px rgba(255, 59, 92, 0.4);
   position: relative;

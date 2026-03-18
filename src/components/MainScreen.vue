@@ -177,7 +177,7 @@ onMounted(async () => {
       <!-- Button group -->
       <div class="btn-group">
       <button class="arcade-btn arcade-btn--primary" @click="start.onClick">
-        <span class="arcade-btn__icon"><span class="pixel-runner"></span></span>
+        <span class="arcade-btn__icon"><svg class="pixel-human" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="2" width="4" height="4" fill="currentColor"/><rect x="7" y="7" width="10" height="2" fill="currentColor"/><rect x="9" y="9" width="2" height="7" fill="currentColor"/><rect x="13" y="9" width="2" height="7" fill="currentColor"/><rect x="9" y="16" width="2" height="6" fill="currentColor"/><rect x="13" y="16" width="2" height="6" fill="currentColor"/><rect x="11" y="14" width="2" height="2" fill="currentColor"/><rect x="5" y="5" width="2" height="2" fill="currentColor"/><rect x="3" y="3" width="2" height="2" fill="currentColor"/><rect x="17" y="5" width="2" height="2" fill="currentColor"/><rect x="19" y="3" width="2" height="2" fill="currentColor"/></svg></span>
         <span class="arcade-btn__text">
           <span class="arcade-btn__label">게임 시작</span>
           <span class="arcade-btn__sub">START GAME</span>
@@ -186,14 +186,14 @@ onMounted(async () => {
 
       <div class="sub-buttons">
         <button class="arcade-btn arcade-btn--sub" @click="openRanking">
-          <span class="arcade-btn__icon-sm"><span class="pixel-crown"></span></span>
+          <span class="arcade-btn__icon-sm"><svg class="pixel-crown" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="2" height="12" fill="currentColor"/><rect x="19" y="3" width="2" height="12" fill="currentColor"/><rect x="11" y="3" width="2" height="2" fill="currentColor"/><rect x="9" y="5" width="2" height="2" fill="currentColor"/><rect x="5" y="5" width="2" height="2" fill="currentColor"/><rect x="3" y="3" width="2" height="2" fill="currentColor"/><rect x="7" y="7" width="2" height="2" fill="currentColor"/><rect x="13" y="5" width="2" height="2" fill="currentColor"/><rect x="15" y="7" width="2" height="2" fill="currentColor"/><rect x="17" y="5" width="2" height="2" fill="currentColor"/><rect x="3" y="15" width="18" height="2" fill="currentColor"/><rect x="3" y="19" width="18" height="2" fill="currentColor"/></svg></span>
           <span class="arcade-btn__text-sm">
             <span class="arcade-btn__label-sm">랭킹</span>
             <span class="arcade-btn__sub-sm">RANKING</span>
           </span>
         </button>
         <button class="arcade-btn arcade-btn--sub" @click="openOptions">
-          <span class="arcade-btn__icon-sm"><span class="pixel-gear"></span></span>
+          <span class="arcade-btn__icon-sm"><svg class="pixel-gear" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip-gear)"><rect x="9" width="6" height="2" fill="currentColor"/><rect x="15" y="24" width="6" height="2" transform="rotate(180 15 24)" fill="currentColor"/><rect y="15" width="6" height="2" transform="rotate(-90 0 15)" fill="currentColor"/><rect x="24" y="9" width="6" height="2" transform="rotate(90 24 9)" fill="currentColor"/><rect x="9" y="2" width="2" height="4" fill="currentColor"/><rect x="15" y="22" width="2" height="4" transform="rotate(180 15 22)" fill="currentColor"/><rect x="2" y="15" width="2" height="4" transform="rotate(-90 2 15)" fill="currentColor"/><rect x="22" y="9" width="2" height="4" transform="rotate(90 22 9)" fill="currentColor"/><rect x="13" y="2" width="2" height="4" fill="currentColor"/><rect x="11" y="22" width="2" height="4" transform="rotate(180 11 22)" fill="currentColor"/><rect x="2" y="11" width="2" height="4" transform="rotate(-90 2 11)" fill="currentColor"/><rect x="22" y="13" width="2" height="4" transform="rotate(90 22 13)" fill="currentColor"/><rect x="7" y="4" width="2" height="2" fill="currentColor"/><rect width="2" height="2" transform="matrix(-1 0 0 1 17 4)" fill="currentColor"/><rect x="17" y="20" width="2" height="2" transform="rotate(180 17 20)" fill="currentColor"/><rect width="2" height="2" transform="matrix(1 0 0 -1 7 20)" fill="currentColor"/><rect x="2" y="2" width="5" height="2" fill="currentColor"/><rect width="5" height="2" transform="matrix(-1 0 0 1 22 2)" fill="currentColor"/><rect x="22" y="22" width="5" height="2" transform="rotate(180 22 22)" fill="currentColor"/><rect width="5" height="2" transform="matrix(1 0 0 -1 2 22)" fill="currentColor"/><rect x="2" y="2" width="2" height="5" fill="currentColor"/><rect width="2" height="5" transform="matrix(-1 0 0 1 22 2)" fill="currentColor"/><rect x="22" y="22" width="2" height="5" transform="rotate(180 22 22)" fill="currentColor"/><rect width="2" height="5" transform="matrix(1 0 0 -1 2 22)" fill="currentColor"/><rect x="4" y="7" width="2" height="2" fill="currentColor"/><rect width="2" height="2" transform="matrix(-1 0 0 1 20 7)" fill="currentColor"/><rect x="20" y="17" width="2" height="2" transform="rotate(180 20 17)" fill="currentColor"/><rect width="2" height="2" transform="matrix(1 0 0 -1 4 17)" fill="currentColor"/><rect x="10" y="8" width="4" height="2" fill="currentColor"/><rect x="10" y="14" width="4" height="2" fill="currentColor"/><rect x="8" y="10" width="2" height="4" fill="currentColor"/><rect x="14" y="10" width="2" height="4" fill="currentColor"/></g><defs><clipPath id="clip-gear"><rect width="24" height="24" fill="white"/></clipPath></defs></svg></span>
           <span class="arcade-btn__text-sm">
             <span class="arcade-btn__label-sm">옵션</span>
             <span class="arcade-btn__sub-sm">OPTIONS</span>
@@ -801,39 +801,16 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
   flex-shrink: 0;
   border-right: 2px solid #2a3a2a;
   padding-right: 14px;
   margin-right: 2px;
 }
 
-.pixel-runner {
+.pixel-human {
   display: block;
-  width: 2px;
-  height: 2px;
-  background: transparent;
-  transform: translate(-8px, -7px);
-  box-shadow:
-    /* head */
-    8px 0 0 currentColor, 10px 0 0 currentColor,
-    8px 2px 0 currentColor, 10px 2px 0 currentColor,
-    /* shoulders */
-    4px 4px 0 currentColor, 6px 4px 0 currentColor, 8px 4px 0 currentColor,
-    10px 4px 0 currentColor, 12px 4px 0 currentColor, 14px 4px 0 currentColor,
-    /* front arm + torso */
-    0px 6px 0 currentColor, 2px 6px 0 currentColor,
-    8px 6px 0 currentColor, 10px 6px 0 currentColor,
-    /* torso + back arm */
-    8px 8px 0 currentColor, 10px 8px 0 currentColor,
-    14px 8px 0 currentColor, 16px 8px 0 currentColor,
-    /* legs */
-    6px 10px 0 currentColor, 12px 10px 0 currentColor,
-    /* lower legs */
-    4px 12px 0 currentColor, 14px 12px 0 currentColor,
-    /* feet */
-    2px 14px 0 currentColor, 16px 14px 0 currentColor;
+  width: 24px;
+  height: 24px;
 }
 
 .arcade-btn__text {
@@ -907,46 +884,15 @@ onMounted(async () => {
 /* ─── Pixel Crown Icon ─── */
 .pixel-crown {
   display: block;
-  width: 2px;
-  height: 2px;
-  background: transparent;
-  transform: translate(-6px, -3px);
-  box-shadow:
-    /* crown tips */
-    0 0 0 #b8a060, 6px 0 0 #b8a060, 12px 0 0 #b8a060,
-    /* crown mid */
-    0 2px 0 #b8a060, 2px 2px 0 #b8a060, 4px 2px 0 #b8a060,
-    6px 2px 0 #b8a060, 8px 2px 0 #b8a060, 10px 2px 0 #b8a060, 12px 2px 0 #b8a060,
-    /* crown body */
-    0 4px 0 #9a8450, 2px 4px 0 #9a8450, 4px 4px 0 #9a8450,
-    6px 4px 0 #9a8450, 8px 4px 0 #9a8450, 10px 4px 0 #9a8450, 12px 4px 0 #9a8450,
-    /* base */
-    0 6px 0 #b8a060, 2px 6px 0 #b8a060, 4px 6px 0 #b8a060,
-    6px 6px 0 #b8a060, 8px 6px 0 #b8a060, 10px 6px 0 #b8a060, 12px 6px 0 #b8a060;
+  width: 24px;
+  height: 24px;
 }
 
 /* ─── Pixel Gear Icon ─── */
 .pixel-gear {
   display: block;
-  width: 2px;
-  height: 2px;
-  background: transparent;
-  transform: translate(-6px, -6px);
-  box-shadow:
-    /* top */
-    4px 0 0 #9a9690, 6px 0 0 #9a9690, 8px 0 0 #9a9690,
-    /* row 1 */
-    2px 2px 0 #9a9690, 4px 2px 0 #9a9690, 6px 2px 0 #9a9690, 8px 2px 0 #9a9690, 10px 2px 0 #9a9690,
-    /* row 2 */
-    0 4px 0 #9a9690, 2px 4px 0 #9a9690, 4px 4px 0 #808080, 6px 4px 0 #808080, 8px 4px 0 #808080, 10px 4px 0 #9a9690, 12px 4px 0 #9a9690,
-    /* row 3 center */
-    0 6px 0 #9a9690, 2px 6px 0 #9a9690, 4px 6px 0 #808080, 6px 6px 0 #121214, 8px 6px 0 #808080, 10px 6px 0 #9a9690, 12px 6px 0 #9a9690,
-    /* row 4 */
-    0 8px 0 #9a9690, 2px 8px 0 #9a9690, 4px 8px 0 #808080, 6px 8px 0 #808080, 8px 8px 0 #808080, 10px 8px 0 #9a9690, 12px 8px 0 #9a9690,
-    /* row 5 */
-    2px 10px 0 #9a9690, 4px 10px 0 #9a9690, 6px 10px 0 #9a9690, 8px 10px 0 #9a9690, 10px 10px 0 #9a9690,
-    /* bottom */
-    4px 12px 0 #9a9690, 6px 12px 0 #9a9690, 8px 12px 0 #9a9690;
+  width: 24px;
+  height: 24px;
 }
 
 .arcade-btn__text-sm {
