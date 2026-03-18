@@ -98,7 +98,8 @@ onMounted(() => {
         <div class="title-tagline">미션을 3초 안에 클리어하라!</div>
       </div>
 
-      <!-- Start button -->
+      <!-- Button group -->
+      <div class="btn-group">
       <button class="arcade-btn arcade-btn--primary" @click="start.onClick">
         <span class="arcade-btn__icon">▶</span>
         <span class="arcade-btn__text">
@@ -107,16 +108,22 @@ onMounted(() => {
         </span>
       </button>
 
-      <!-- Sub buttons -->
       <div class="sub-buttons">
         <button class="arcade-btn arcade-btn--sub" @click="openRanking">
           <span class="arcade-btn__icon-sm">🏆</span>
-          <span class="arcade-btn__label-sm">랭킹</span>
+          <span class="arcade-btn__text-sm">
+            <span class="arcade-btn__label-sm">랭킹</span>
+            <span class="arcade-btn__sub-sm">RANKING</span>
+          </span>
         </button>
         <button class="arcade-btn arcade-btn--sub" @click="openOptions">
           <span class="arcade-btn__icon-sm">⚙</span>
-          <span class="arcade-btn__label-sm">옵션</span>
+          <span class="arcade-btn__text-sm">
+            <span class="arcade-btn__label-sm">옵션</span>
+            <span class="arcade-btn__sub-sm">OPTIONS</span>
+          </span>
         </button>
+      </div>
       </div>
 
       <!-- Best score -->
@@ -458,6 +465,15 @@ onMounted(() => {
 }
 
 /* ─── Arcade Buttons ─── */
+/* ─── Button Group ─── */
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 260px;
+}
+
 .arcade-btn {
   display: flex;
   align-items: center;
@@ -490,6 +506,8 @@ onMounted(() => {
 }
 
 .arcade-btn--primary {
+  width: 100%;
+  justify-content: center;
   animation: btn-pulse 2.5s ease-in-out infinite;
 }
 
@@ -533,9 +551,12 @@ onMounted(() => {
 .sub-buttons {
   display: flex;
   gap: 12px;
+  width: 100%;
 }
 
 .arcade-btn--sub {
+  flex: 1;
+  justify-content: center;
   padding: 10px 20px;
   gap: 8px;
   border-color: var(--arc-surface-light);
@@ -553,13 +574,32 @@ onMounted(() => {
 }
 
 .arcade-btn__icon-sm {
-  font-size: 16px;
+  font-size: 20px;
   line-height: 1;
+}
+
+.arcade-btn__text-sm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
 }
 
 .arcade-btn__label-sm {
   font-size: 14px;
   font-weight: 700;
+}
+
+.arcade-btn__sub-sm {
+  font-size: 8px;
+  color: var(--arc-muted);
+  letter-spacing: 1.5px;
+  opacity: 0.6;
+}
+
+.arcade-btn--sub:hover .arcade-btn__sub-sm {
+  color: var(--arc-green-dim);
+  opacity: 1;
 }
 
 /* ─── Score Badge ─── */

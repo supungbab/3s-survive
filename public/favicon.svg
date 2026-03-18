@@ -1,5 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <circle cx="64" cy="64" r="60" fill="#0a0a0a" stroke="#ff9100" stroke-width="4"/>
-  <text x="64" y="80" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="58" fill="#ff9100">3</text>
-  <path d="M64 8 A56 56 0 1 1 16.3 36" fill="none" stroke="#ff9100" stroke-width="5" stroke-linecap="round" opacity="0.4"/>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#0f1520"/>
+      <stop offset="100%" stop-color="#060a12"/>
+    </radialGradient>
+    <filter id="g">
+      <feGaussianBlur stdDeviation="3.5" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="128" height="128" rx="22" fill="url(#bg)"/>
+
+  <!-- Pixel "3" — 5col x 7row, cell=12px, centered -->
+  <g filter="url(#g)" fill="#39ff14">
+    <!-- Row 0: .XXX. -->
+    <rect x="46" y="22" width="12" height="12"/>
+    <rect x="58" y="22" width="12" height="12"/>
+    <rect x="70" y="22" width="12" height="12"/>
+    <!-- Row 1: X...X -->
+    <rect x="34" y="34" width="12" height="12"/>
+    <rect x="82" y="34" width="12" height="12"/>
+    <!-- Row 2: ....X -->
+    <rect x="82" y="46" width="12" height="12"/>
+    <!-- Row 3: ..XX. -->
+    <rect x="58" y="58" width="12" height="12"/>
+    <rect x="70" y="58" width="12" height="12"/>
+    <!-- Row 4: ....X -->
+    <rect x="82" y="70" width="12" height="12"/>
+    <!-- Row 5: X...X -->
+    <rect x="34" y="82" width="12" height="12"/>
+    <rect x="82" y="82" width="12" height="12"/>
+    <!-- Row 6: .XXX. -->
+    <rect x="46" y="94" width="12" height="12"/>
+    <rect x="58" y="94" width="12" height="12"/>
+    <rect x="70" y="94" width="12" height="12"/>
+  </g>
 </svg>
