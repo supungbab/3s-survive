@@ -146,9 +146,12 @@ onUnmounted(() => {
       </template>
 
       <!-- Phase indicator -->
-      <div v-if="phase === 'SHOWING'" class="phase-badge">준비...</div>
-      <div v-if="phase === 'SUCCESS'" class="phase-badge success">+1</div>
-      <div v-if="phase === 'FAIL'" class="phase-badge fail">실패!</div>
+      <div class="phase-badge" :class="{ success: phase === 'SUCCESS', fail: phase === 'FAIL' }">
+        <template v-if="phase === 'SHOWING'">준비...</template>
+        <template v-else-if="phase === 'SUCCESS'">+1</template>
+        <template v-else-if="phase === 'FAIL'">실패!</template>
+        <template v-else>&nbsp;</template>
+      </div>
     </div>
 
     <!-- Feedback layer -->
@@ -204,7 +207,10 @@ onUnmounted(() => {
   font-size: 24px;
   font-weight: 700;
   color: var(--muted);
-  animation: fade-in 0.2s ease-out;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .phase-badge.success {
