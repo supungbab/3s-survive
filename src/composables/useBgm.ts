@@ -99,11 +99,11 @@ function playNote(
 
 // ─── Step Sequencer ───
 function tick() {
-  const { soundEnabled, volume } = useSettings()
-  if (!soundEnabled.value) return
+  const { bgmEnabled, bgmVolume } = useSettings()
+  if (!bgmEnabled.value) return
 
   const master = getMaster()
-  master.gain.value = volume.value * 0.35
+  master.gain.value = bgmVolume.value * 0.35
 
   const i = step % MELODY.length
 
@@ -144,6 +144,10 @@ export function useBgm() {
     if (timer !== null) {
       clearInterval(timer)
       timer = null
+    }
+    // 즉시 음소거 — 현재 울리는 노트도 바로 끊김
+    if (masterGain) {
+      masterGain.gain.setValueAtTime(0, getAudioContext().currentTime)
     }
   }
 

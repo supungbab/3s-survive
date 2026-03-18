@@ -5,9 +5,11 @@ const STORAGE_KEY = 'three_seconds_settings'
 interface Settings {
   soundEnabled: boolean
   volume: number
+  bgmEnabled: boolean
+  bgmVolume: number
 }
 
-const defaults: Settings = { soundEnabled: true, volume: 0.7 }
+const defaults: Settings = { soundEnabled: true, volume: 0.7, bgmEnabled: true, bgmVolume: 0.5 }
 
 function load(): Settings {
   try {
@@ -30,11 +32,18 @@ function save(s: Settings) {
 const stored = load()
 const soundEnabled = ref(stored.soundEnabled)
 const volume = ref(stored.volume)
+const bgmEnabled = ref(stored.bgmEnabled)
+const bgmVolume = ref(stored.bgmVolume)
 
-watch([soundEnabled, volume], () => {
-  save({ soundEnabled: soundEnabled.value, volume: volume.value })
+watch([soundEnabled, volume, bgmEnabled, bgmVolume], () => {
+  save({
+    soundEnabled: soundEnabled.value,
+    volume: volume.value,
+    bgmEnabled: bgmEnabled.value,
+    bgmVolume: bgmVolume.value,
+  })
 })
 
 export function useSettings() {
-  return { soundEnabled, volume }
+  return { soundEnabled, volume, bgmEnabled, bgmVolume }
 }

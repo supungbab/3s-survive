@@ -21,7 +21,7 @@ const mounted = ref(false)
 const showOptions = ref(false)
 const showRankingToast = ref(false)
 
-const { soundEnabled, volume } = useSettings()
+const { soundEnabled, volume, bgmEnabled, bgmVolume } = useSettings()
 const { playTick } = useAudio()
 const bgm = useBgm()
 
@@ -48,9 +48,6 @@ function toggleSound(e: Event) {
   soundEnabled.value = !soundEnabled.value
   if (soundEnabled.value) {
     playTick()
-    bgm.start()
-  } else {
-    bgm.stop()
   }
 }
 
@@ -59,13 +56,28 @@ function onVolumeInput(e: Event) {
   volume.value = Number(target.value)
 }
 
+function toggleBgm(e: Event) {
+  e.stopPropagation()
+  bgmEnabled.value = !bgmEnabled.value
+  if (bgmEnabled.value) {
+    bgm.start()
+  } else {
+    bgm.stop()
+  }
+}
+
+function onBgmVolumeInput(e: Event) {
+  const target = e.target as HTMLInputElement
+  bgmVolume.value = Number(target.value)
+}
+
 function testSound(e: Event) {
   e.stopPropagation()
   playTick()
 }
 
 async function tryStartBgm() {
-  if (!bgm.isPlaying() && soundEnabled.value) {
+  if (!bgm.isPlaying() && bgmEnabled.value) {
     await bgm.start()
   }
 }
@@ -216,6 +228,42 @@ onMounted(async () => {
           </div>
 
           <div class="modal-body">
+            <!-- BGM toggle -->
+            <div class="option-row">
+              <span class="option-label">배경음악</span>
+              <button
+                class="toggle-btn"
+                :class="{ active: bgmEnabled }"
+                @click="toggleBgm"
+              >
+                <span class="toggle-track">
+                  <span class="toggle-thumb" />
+                </span>
+                <span class="toggle-text">{{ bgmEnabled ? 'ON' : 'OFF' }}</span>
+              </button>
+            </div>
+
+            <!-- BGM Volume slider -->
+            <div class="option-row" :class="{ disabled: !bgmEnabled }">
+              <span class="option-label">BGM 볼륨</span>
+              <div class="volume-control">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  :value="bgmVolume"
+                  :disabled="!bgmEnabled"
+                  class="volume-slider"
+                  @input="onBgmVolumeInput"
+                />
+                <span class="volume-value">{{ Math.round(bgmVolume * 100) }}%</span>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="option-divider" />
+
             <!-- Sound toggle -->
             <div class="option-row">
               <span class="option-label">효과음</span>
@@ -1039,6 +1087,13 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+/* ─── Option Divider ─── */
+.option-divider {
+  height: 1px;
+  background: #2a2a28;
+  margin: 2px 0;
 }
 
 /* ─── Option Row ─── */
