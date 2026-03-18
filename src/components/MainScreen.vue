@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { usePressable } from '@/composables/usePressable'
 
 defineProps<{
@@ -11,28 +10,11 @@ const emit = defineEmits<{
 }>()
 
 const start = usePressable(() => emit('start'))
-
-const themes = ['orange', 'minimal'] as const
-const currentTheme = ref(0)
-
-function toggleTheme(e: MouseEvent) {
-  e.stopPropagation()
-  currentTheme.value = (currentTheme.value + 1) % themes.length
-  const theme = themes[currentTheme.value]
-  if (theme === 'orange') {
-    document.documentElement.removeAttribute('data-theme')
-  } else {
-    document.documentElement.setAttribute('data-theme', theme)
-  }
-}
 </script>
 
 <template>
   <div class="start-screen" @click="start.onClick">
-    <button class="theme-toggle" @click="toggleTheme">
-      {{ themes[currentTheme] === 'orange' ? '🔥' : '⚪' }}
-    </button>
-    <div class="start-content">
+<div class="start-content">
       <h1 class="title">3초 생존</h1>
       <p class="subtitle">미션을 3초 안에 클리어하라!</p>
       <div v-if="bestScore > 0" class="best-display">
@@ -51,22 +33,6 @@ function toggleTheme(e: MouseEvent) {
   justify-content: center;
   cursor: pointer;
   position: relative;
-}
-
-.theme-toggle {
-  position: absolute;
-  top: max(16px, env(safe-area-inset-top));
-  right: 16px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .start-content {
