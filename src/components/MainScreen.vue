@@ -129,7 +129,7 @@ onMounted(() => {
         <div class="title-big">
           <span class="title-num">3</span><span class="title-unit">초</span>
         </div>
-        <div class="title-sub">생존 게임</div>
+        <div class="title-sub">생존</div>
         <div class="title-tagline">미션을 3초 안에 클리어하라!</div>
       </div>
 
@@ -244,11 +244,14 @@ onMounted(() => {
 .arcade-screen {
   position: relative;
   height: 100dvh;
-  background: #060a12;
+  background: #0a0610;
   background-image:
-    radial-gradient(ellipse at 30% 20%, rgba(255, 59, 92, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 15%, rgba(57, 255, 20, 0.03) 0%, transparent 40%),
-    radial-gradient(ellipse at 50% 100%, rgba(255, 120, 20, 0.08) 0%, transparent 40%);
+    radial-gradient(ellipse at 50% 100%, rgba(255, 80, 20, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 90%, rgba(255, 40, 10, 0.14) 0%, transparent 45%),
+    radial-gradient(ellipse at 70% 85%, rgba(255, 100, 30, 0.12) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 60%, rgba(180, 40, 20, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 20%, rgba(80, 20, 60, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 15%, rgba(60, 10, 50, 0.12) 0%, transparent 40%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -265,9 +268,9 @@ onMounted(() => {
   inset: 0;
   background: radial-gradient(
     ellipse at 50% 50%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.4) 80%,
-    rgba(0, 0, 0, 0.75) 100%
+    transparent 45%,
+    rgba(0, 0, 0, 0.5) 70%,
+    rgba(0, 0, 0, 0.85) 100%
   );
   pointer-events: none;
   z-index: 11;
@@ -279,16 +282,19 @@ onMounted(() => {
   inset: 0;
   pointer-events: none;
   z-index: 12;
-  animation: crt-flicker 0.15s infinite;
+  animation: crt-flicker 0.12s infinite;
   opacity: 0;
 }
 
 @keyframes crt-flicker {
   0% { opacity: 0; }
-  5% { opacity: 0.02; background: rgba(255, 255, 255, 0.02); }
-  10% { opacity: 0; }
-  92% { opacity: 0; }
-  93% { opacity: 0.015; background: rgba(200, 255, 200, 0.015); }
+  4% { opacity: 0.035; background: rgba(255, 255, 255, 0.03); }
+  8% { opacity: 0; }
+  50% { opacity: 0; }
+  52% { opacity: 0.02; background: rgba(255, 200, 180, 0.02); }
+  54% { opacity: 0; }
+  90% { opacity: 0; }
+  92% { opacity: 0.025; background: rgba(200, 255, 200, 0.02); }
   94% { opacity: 0; }
 }
 
@@ -303,7 +309,7 @@ onMounted(() => {
   pointer-events: none;
   z-index: 9;
   animation: noise-drift 0.5s steps(3) infinite;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 @keyframes noise-drift {
@@ -321,8 +327,8 @@ onMounted(() => {
     to bottom,
     transparent 0px,
     transparent 2px,
-    rgba(0, 0, 0, 0.18) 2px,
-    rgba(0, 0, 0, 0.18) 4px
+    rgba(0, 0, 0, 0.22) 2px,
+    rgba(0, 0, 0, 0.22) 4px
   );
   pointer-events: none;
   z-index: 13;
@@ -346,8 +352,8 @@ onMounted(() => {
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.05; }
-  50% { opacity: 0.5; }
+  0%, 100% { opacity: 0.02; }
+  50% { opacity: 0.25; }
 }
 
 /* ─── Layer: Buildings (뒤, 원경) ─── */
@@ -379,12 +385,14 @@ onMounted(() => {
 }
 
 .skyline__layer--back .building {
-  background: #0c1424;
+  background: #1a0c0e;
   opacity: 0.8;
+  box-shadow: 0 -8px 20px rgba(255, 60, 20, 0.08);
 }
 
 .skyline__layer--front .building {
-  background: #050a14;
+  background: #0a0508;
+  box-shadow: 0 -6px 16px rgba(255, 50, 15, 0.06);
 }
 
 /* Window lights — some reddish (fire reflections) */
@@ -393,11 +401,11 @@ onMounted(() => {
   position: absolute;
   inset: 6px 4px 8px;
   background-image:
-    radial-gradient(circle, rgba(255, 180, 50, 0.5) 1px, transparent 1px),
-    radial-gradient(circle, rgba(255, 80, 30, 0.4) 1px, transparent 1px);
+    radial-gradient(circle, rgba(255, 140, 40, 0.6) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 60, 20, 0.55) 1px, transparent 1px);
   background-size: 8px 10px, 12px 14px;
   background-position: 0 0, 4px 5px;
-  opacity: 0.35;
+  opacity: 0.45;
 }
 
 /* Subtle red top-glow on some buildings */
@@ -407,8 +415,8 @@ onMounted(() => {
   top: -4px;
   left: 20%;
   right: 20%;
-  height: 8px;
-  background: radial-gradient(ellipse, rgba(255, 60, 20, 0.3) 0%, transparent 70%);
+  height: 12px;
+  background: radial-gradient(ellipse, rgba(255, 60, 20, 0.5) 0%, transparent 70%);
   opacity: 0;
   animation: building-glow 5s ease-in-out infinite;
 }
@@ -440,12 +448,12 @@ onMounted(() => {
   background:
     /* 거친 흙 노이즈 텍스처 */
     url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E"),
-    /* 흙 색조 그라데이션 */
+    /* 흙 색조 그라데이션 — 화재 반사 */
     linear-gradient(
       to bottom,
-      #1a1410 0%,
-      #15100c 8%,
-      #120e0a 20%,
+      #1e120e 0%,
+      #18100a 8%,
+      #140c08 20%,
       #0e0a07 45%,
       #0a0806 100%
     );
@@ -458,11 +466,12 @@ onMounted(() => {
   top: -40px;
   left: 0;
   right: 0;
-  height: 80px;
+  height: 100px;
   background:
-    radial-gradient(ellipse at 25% 80%, rgba(255, 80, 20, 0.18) 0%, transparent 50%),
-    radial-gradient(ellipse at 55% 80%, rgba(255, 50, 10, 0.14) 0%, transparent 45%),
-    radial-gradient(ellipse at 80% 80%, rgba(255, 100, 30, 0.12) 0%, transparent 40%);
+    radial-gradient(ellipse at 25% 80%, rgba(255, 80, 20, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 55% 80%, rgba(255, 50, 10, 0.25) 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 80%, rgba(255, 100, 30, 0.22) 0%, transparent 40%),
+    radial-gradient(ellipse at 40% 90%, rgba(255, 40, 5, 0.15) 0%, transparent 55%);
   animation: fire-glow 4s ease-in-out infinite alternate;
 }
 
@@ -477,16 +486,16 @@ onMounted(() => {
   background:
     linear-gradient(
       to bottom,
-      rgba(60, 35, 15, 0.5) 0%,
-      rgba(40, 22, 10, 0.3) 40%,
+      rgba(80, 35, 15, 0.6) 0%,
+      rgba(50, 22, 10, 0.35) 40%,
       transparent 100%
     ),
     linear-gradient(
       to right,
       transparent 0%,
-      rgba(255, 80, 30, 0.06) 20%,
-      rgba(255, 60, 20, 0.1) 50%,
-      rgba(255, 80, 30, 0.06) 80%,
+      rgba(255, 80, 30, 0.12) 20%,
+      rgba(255, 60, 20, 0.18) 50%,
+      rgba(255, 80, 30, 0.12) 80%,
       transparent 100%
     );
 }
