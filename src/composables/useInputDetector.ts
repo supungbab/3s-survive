@@ -1,5 +1,6 @@
 import { ref, onUnmounted } from 'vue'
 import type { InputAction, SwipeDirection } from '@/types/game'
+import { useAudio } from './useAudio'
 
 const TAP_MAX_DURATION = 200
 const TAP_MAX_DISTANCE = 10
@@ -11,6 +12,7 @@ export function useInputDetector(
   onInput: (action: InputAction) => void,
   isBlocked: () => boolean,
 ) {
+  const { playTick } = useAudio()
   const tapCount = ref(0)
   const isPressed = ref(false)
 
@@ -74,12 +76,14 @@ export function useInputDetector(
       } else {
         direction = dy > 0 ? 'DOWN' : 'UP'
       }
+      playTick()
       onInput({ type: 'SWIPE', direction })
       return
     }
 
     // Tap detection
     if (dist < TAP_MAX_DISTANCE && elapsed < TAP_MAX_DURATION) {
+      playTick()
       tapCount.value++
       onInput({ type: 'TAP', x: pos.x, y: pos.y })
 

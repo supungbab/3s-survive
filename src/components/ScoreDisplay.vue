@@ -38,11 +38,11 @@ watch(() => props.score, () => {
 .score-value {
   font-size: 48px;
   font-weight: 900;
-  color: var(--arc-amber);
+  color: var(--px-green-bright);
   text-align: right;
   line-height: 1;
   text-shadow:
-    0 0 16px var(--arc-amber-glow),
-    0 0 48px rgba(255, 184, 0, 0.12);
+    0 0 16px rgba(57, 255, 20, 0.3),
+    0 0 48px rgba(57, 255, 20, 0.1);
 }
 </style>

@@ -2,6 +2,7 @@
 import { usePressable } from '@/composables/usePressable'
 import { useSettings } from '@/composables/useSettings'
 import { useAudio } from '@/composables/useAudio'
+import { useBgm } from '@/composables/useBgm'
 import { ref, onMounted } from 'vue'
 
 defineProps<{
@@ -12,25 +13,32 @@ const emit = defineEmits<{
   start: []
 }>()
 
-const start = usePressable(() => emit('start'))
+const start = usePressable(() => {
+  bgm.stop()
+  emit('start')
+})
 const mounted = ref(false)
 const showOptions = ref(false)
 const showRankingToast = ref(false)
 
 const { soundEnabled, volume } = useSettings()
 const { playTick } = useAudio()
+const bgm = useBgm()
 
 function openOptions(e: Event) {
   e.stopPropagation()
+  playTick()
   showOptions.value = true
 }
 
 function closeOptions() {
+  playTick()
   showOptions.value = false
 }
 
 function openRanking(e: Event) {
   e.stopPropagation()
+  playTick()
   showRankingToast.value = true
   setTimeout(() => { showRankingToast.value = false }, 1500)
 }
@@ -40,6 +48,9 @@ function toggleSound(e: Event) {
   soundEnabled.value = !soundEnabled.value
   if (soundEnabled.value) {
     playTick()
+    bgm.start()
+  } else {
+    bgm.stop()
   }
 }
 
@@ -53,10 +64,28 @@ function testSound(e: Event) {
   playTick()
 }
 
-onMounted(() => {
+async function tryStartBgm() {
+  if (!bgm.isPlaying() && soundEnabled.value) {
+    await bgm.start()
+  }
+}
+
+onMounted(async () => {
   requestAnimationFrame(() => {
     mounted.value = true
   })
+  // Try immediately — works if browser allows autoplay
+  await tryStartBgm()
+  // Fallback: start on first touch if blocked
+  if (!bgm.isPlaying()) {
+    const onGesture = async () => {
+      await tryStartBgm()
+      document.removeEventListener('pointerdown', onGesture)
+      document.removeEventListener('click', onGesture)
+    }
+    document.addEventListener('pointerdown', onGesture)
+    document.addEventListener('click', onGesture)
+  }
 })
 </script>
 
@@ -576,11 +605,11 @@ onMounted(() => {
 .title-num {
   font-size: 96px;
   font-weight: 900;
-  color: var(--arc-green);
+  color: var(--px-green-bright);
   text-shadow:
-    0 0 20px var(--arc-green-glow),
-    0 0 60px var(--arc-green-glow),
-    0 0 120px rgba(57, 255, 20, 0.15);
+    0 0 20px rgba(140, 200, 144, 0.4),
+    0 0 60px rgba(140, 200, 144, 0.2),
+    0 0 120px rgba(140, 200, 144, 0.08);
   letter-spacing: -4px;
   display: inline-block;
   animation: num-breathe 3s ease-in-out infinite;
@@ -589,15 +618,15 @@ onMounted(() => {
 @keyframes num-breathe {
   0%, 100% {
     text-shadow:
-      0 0 20px var(--arc-green-glow),
-      0 0 60px var(--arc-green-glow),
-      0 0 120px rgba(57, 255, 20, 0.15);
+      0 0 20px rgba(140, 200, 144, 0.4),
+      0 0 60px rgba(140, 200, 144, 0.2),
+      0 0 120px rgba(140, 200, 144, 0.08);
   }
   50% {
     text-shadow:
-      0 0 30px var(--arc-green-glow),
-      0 0 80px var(--arc-green-glow),
-      0 0 160px rgba(57, 255, 20, 0.25);
+      0 0 30px rgba(140, 200, 144, 0.5),
+      0 0 80px rgba(140, 200, 144, 0.3),
+      0 0 160px rgba(140, 200, 144, 0.12);
   }
 }
 
@@ -618,9 +647,26 @@ onMounted(() => {
 
 .title-tagline {
   font-size: 13px;
-  color: var(--arc-muted);
+  color: var(--px-green);
   margin-top: 12px;
   letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(140, 200, 144, 0.4);
+  animation: flicker-light 10s steps(1) infinite;
+}
+
+@keyframes flicker-light {
+  0%    { color: var(--px-green); text-shadow: 0 0 8px rgba(140, 200, 144, 0.4); }
+  /* 첫 번째 꺼짐 */
+  24%   { color: var(--px-green); text-shadow: 0 0 8px rgba(140, 200, 144, 0.4); }
+  25%   { color: var(--arc-muted); text-shadow: none; }
+  26%   { color: var(--px-green); text-shadow: 0 0 8px rgba(140, 200, 144, 0.4); }
+  27%   { color: var(--arc-muted); text-shadow: none; }
+  28%   { color: var(--px-green); text-shadow: 0 0 8px rgba(140, 200, 144, 0.4); }
+  /* 두 번째 꺼짐 */
+  62%   { color: var(--px-green); text-shadow: 0 0 8px rgba(140, 200, 144, 0.4); }
+  63%   { color: var(--arc-muted); text-shadow: none; }
+  64%   { color: var(--px-green); text-shadow: 0 0 8px rgba(140, 200, 144, 0.4); }
+  100%  { color: var(--px-green); text-shadow: 0 0 8px rgba(140, 200, 144, 0.4); }
 }
 
 /* ─── Arcade Buttons ─── */
@@ -638,10 +684,10 @@ onMounted(() => {
   align-items: center;
   gap: 16px;
   padding: 14px 24px;
-  border: 3px solid #4a5648;
+  border: 3px solid var(--px-green-border);
   border-radius: 0;
-  background: #0c140c;
-  color: #8cc890;
+  background: var(--px-green-bg);
+  color: var(--px-green);
   font-family: 'Galmuri11', monospace;
   cursor: pointer;
   position: relative;
@@ -658,15 +704,15 @@ onMounted(() => {
 }
 
 .arcade-btn:hover {
-  background: #101c10;
-  border-color: #5a6a56;
+  background: var(--px-green-bg-hover);
+  border-color: var(--px-green-border-hover);
   box-shadow:
     0 0 0 3px #111311,
     0 0 16px rgba(57, 255, 20, 0.1),
     inset 1px 1px 0 #6a7a66,
     inset -1px -1px 0 #3a4a3a,
     inset 0 0 24px rgba(57, 255, 20, 0.06);
-  color: #a0dca4;
+  color: var(--px-green-bright);
 }
 
 .arcade-btn:active {
@@ -756,7 +802,7 @@ onMounted(() => {
 
 .arcade-btn__sub {
   font-size: 10px;
-  color: #5a7a5c;
+  color: var(--px-green-dim);
   letter-spacing: 3px;
 }
 
@@ -772,9 +818,9 @@ onMounted(() => {
   justify-content: center;
   padding: 12px 16px;
   gap: 12px;
-  border: 2px solid #4a4a46;
-  background: #121214;
-  color: #9a9690;
+  border: 2px solid var(--px-neutral-border);
+  background: var(--px-neutral-bg);
+  color: var(--px-neutral);
   box-shadow:
     0 0 0 2px #0a0a0c,
     inset 1px 1px 0 #3a3a38,
@@ -783,9 +829,9 @@ onMounted(() => {
 }
 
 .arcade-btn--sub:hover {
-  border-color: #5a5a56;
-  color: #c0bab0;
-  background: #181818;
+  border-color: var(--px-neutral-border-hover);
+  color: var(--px-neutral-bright);
+  background: var(--px-neutral-bg-hover);
   box-shadow:
     0 0 0 2px #0a0a0c,
     inset 1px 1px 0 #4a4a48,
@@ -866,7 +912,7 @@ onMounted(() => {
 
 .arcade-btn__sub-sm {
   font-size: 8px;
-  color: #606058;
+  color: var(--px-neutral-dim);
   letter-spacing: 1.5px;
 }
 
@@ -893,14 +939,14 @@ onMounted(() => {
 .score-badge__value {
   font-size: 22px;
   font-weight: 700;
-  color: var(--arc-amber);
-  text-shadow: 0 0 16px rgba(255, 184, 0, 0.3);
+  color: var(--px-green-bright);
+  text-shadow: 0 0 16px rgba(57, 255, 20, 0.3);
 }
 
 .score-badge__unit {
   font-size: 14px;
   font-weight: 400;
-  color: var(--arc-amber);
+  color: var(--px-green);
   margin-left: 2px;
   opacity: 0.7;
 }
@@ -918,13 +964,14 @@ onMounted(() => {
   left: 50%;
   transform: translateX(-50%);
   padding: 10px 24px;
-  background: var(--arc-surface);
-  border: 1px solid var(--arc-surface-light);
-  border-radius: 4px;
-  color: var(--arc-muted);
+  background: var(--px-neutral-bg);
+  border: 2px solid var(--px-neutral-border);
+  border-radius: 0;
+  color: var(--px-neutral);
   font-size: 14px;
   font-family: 'Galmuri11', monospace;
   z-index: 20;
+  box-shadow: 0 0 0 2px var(--px-neutral-frame);
 }
 
 .toast-enter-active { transition: all 0.2s ease; }
@@ -936,7 +983,7 @@ onMounted(() => {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(5, 8, 15, 0.85);
+  background: rgba(4, 2, 6, 0.92);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -945,35 +992,37 @@ onMounted(() => {
 }
 
 .modal-card {
-  background: var(--arc-surface);
-  border: 2px solid var(--arc-surface-light);
-  border-radius: 8px;
+  background: #0a0a0c;
+  border: 3px solid var(--px-neutral-border);
+  border-radius: 0;
   width: 100%;
-  max-width: 320px;
+  max-width: 300px;
   box-shadow:
-    0 0 40px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 0 0 3px var(--px-neutral-frame),
+    inset 1px 1px 0 var(--px-neutral-bevel-light),
+    inset -1px -1px 0 var(--px-neutral-bevel-dark),
+    0 0 60px rgba(0, 0, 0, 0.6);
 }
 
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--arc-surface-light);
+  padding: 14px 20px;
+  border-bottom: 2px solid #2a2a28;
 }
 
 .modal-title {
   font-size: 16px;
   font-weight: 700;
-  color: var(--arc-text);
-  letter-spacing: 2px;
+  color: var(--px-neutral);
+  letter-spacing: 3px;
 }
 
 .modal-close {
   background: none;
   border: none;
-  color: var(--arc-muted);
+  color: var(--px-neutral-dim);
   font-size: 18px;
   cursor: pointer;
   padding: 4px 8px;
@@ -982,7 +1031,7 @@ onMounted(() => {
 }
 
 .modal-close:hover {
-  color: var(--arc-text);
+  color: var(--px-neutral-bright);
 }
 
 .modal-body {
@@ -1007,7 +1056,7 @@ onMounted(() => {
 
 .option-label {
   font-size: 14px;
-  color: var(--arc-text);
+  color: var(--px-neutral);
 }
 
 /* ─── Toggle ─── */
@@ -1024,34 +1073,34 @@ onMounted(() => {
 
 .toggle-track {
   width: 40px;
-  height: 22px;
-  border-radius: 11px;
-  background: var(--arc-surface-light);
+  height: 20px;
+  border-radius: 0;
+  background: #1a1a1c;
   position: relative;
-  transition: background 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.2s, border-color 0.2s;
+  border: 2px solid #3a3a38;
 }
 
 .toggle-btn.active .toggle-track {
-  background: rgba(57, 255, 20, 0.2);
-  border-color: var(--arc-green);
+  background: var(--px-green-bg);
+  border-color: var(--px-green-border);
 }
 
 .toggle-thumb {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--arc-muted);
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  border-radius: 0;
+  background: var(--px-neutral-dim);
   transition: all 0.2s;
 }
 
 .toggle-btn.active .toggle-thumb {
-  left: 20px;
-  background: var(--arc-green);
-  box-shadow: 0 0 8px var(--arc-green-glow);
+  left: 21px;
+  background: var(--px-green);
+  box-shadow: 0 0 6px var(--px-green-glow);
 }
 
 .toggle-text {
@@ -1061,7 +1110,7 @@ onMounted(() => {
 }
 
 .toggle-btn.active .toggle-text {
-  color: var(--arc-green);
+  color: var(--px-green);
 }
 
 /* ─── Volume Slider ─── */
@@ -1075,37 +1124,38 @@ onMounted(() => {
   -webkit-appearance: none;
   appearance: none;
   width: 120px;
-  height: 4px;
-  background: var(--arc-surface-light);
-  border-radius: 2px;
+  height: 6px;
+  background: #1a1a1c;
+  border-radius: 0;
+  border: 2px solid #3a3a38;
   outline: none;
 }
 
 .volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--arc-green);
+  width: 14px;
+  height: 14px;
+  border-radius: 0;
+  background: var(--px-green);
   cursor: pointer;
-  box-shadow: 0 0 8px var(--arc-green-glow);
+  box-shadow: 0 0 6px var(--px-green-glow);
   border: none;
 }
 
 .volume-slider::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--arc-green);
+  width: 14px;
+  height: 14px;
+  border-radius: 0;
+  background: var(--px-green);
   cursor: pointer;
-  box-shadow: 0 0 8px var(--arc-green-glow);
+  box-shadow: 0 0 6px var(--px-green-glow);
   border: none;
 }
 
 .volume-value {
   font-size: 12px;
-  color: var(--arc-muted);
+  color: var(--px-neutral-dim);
   min-width: 32px;
   text-align: right;
 }
@@ -1113,19 +1163,23 @@ onMounted(() => {
 /* ─── Test Sound Button ─── */
 .test-sound-btn {
   padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--arc-surface-light);
-  border-radius: 4px;
-  color: var(--arc-muted);
+  background: var(--px-neutral-bg);
+  border: 2px solid var(--px-neutral-border);
+  border-radius: 0;
+  color: var(--px-neutral);
   font-size: 13px;
   font-family: 'Galmuri11', monospace;
   cursor: pointer;
   transition: all 0.15s;
+  box-shadow:
+    inset 1px 1px 0 var(--px-neutral-bevel-light),
+    inset -1px -1px 0 var(--px-neutral-bevel-dark);
 }
 
 .test-sound-btn:hover:not(:disabled) {
-  border-color: var(--arc-green);
-  color: var(--arc-green);
+  border-color: var(--px-green-border);
+  color: var(--px-green);
+  background: var(--px-green-bg);
 }
 
 .test-sound-btn:disabled {

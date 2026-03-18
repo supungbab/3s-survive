@@ -14,12 +14,41 @@
 
 :root {
   /* ─── Arcade Nightscape tokens ─── */
-  --arc-bg: #0a0e17;
+  --arc-bg: #0a0610;
   --arc-surface: #111827;
   --arc-surface-light: #1e293b;
   --arc-text: #e2e8f0;
   --arc-muted: #64748b;
 
+  /* ─── Pixel Green (primary) ─── */
+  --px-green: #8cc890;
+  --px-green-bright: #a0dca4;
+  --px-green-dim: #5a7a5c;
+  --px-green-glow: rgba(140, 200, 144, 0.4);
+  --px-green-glow-strong: rgba(140, 200, 144, 0.8);
+
+  /* ─── Pixel Green borders/surfaces ─── */
+  --px-green-bg: #0c140c;
+  --px-green-bg-hover: #101c10;
+  --px-green-border: #4a5648;
+  --px-green-border-hover: #5a6a56;
+  --px-green-bevel-light: #5a6858;
+  --px-green-bevel-dark: #2a322a;
+  --px-green-frame: #111311;
+
+  /* ─── Pixel Neutral (secondary) ─── */
+  --px-neutral: #9a9690;
+  --px-neutral-bright: #c0bab0;
+  --px-neutral-dim: #606058;
+  --px-neutral-bg: #121214;
+  --px-neutral-bg-hover: #181818;
+  --px-neutral-border: #4a4a46;
+  --px-neutral-border-hover: #5a5a56;
+  --px-neutral-bevel-light: #3a3a38;
+  --px-neutral-bevel-dark: #1a1a1c;
+  --px-neutral-frame: #0a0a0c;
+
+  /* ─── Accent colors ─── */
   --arc-green: #39ff14;
   --arc-green-dim: #1a7a0a;
   --arc-green-glow: rgba(57, 255, 20, 0.4);
@@ -32,8 +61,12 @@
   --arc-success: #39ff14;
   --arc-warning: #ffab00;
 
-  --arc-building-back: #0f1a2e;
-  --arc-building-front: #070d1a;
+  /* ─── Pixel icon colors ─── */
+  --px-crown: #b8a060;
+  --px-crown-dark: #9a8450;
+
+  --arc-building-back: #1a0c0e;
+  --arc-building-front: #0a0508;
 
   /* Game mission colors */
   --color-red: #ff3b5c;
@@ -42,7 +75,7 @@
   --color-green: #00e676;
   --color-purple: #d500f9;
 
-  /* Legacy compat aliases (used by some components) */
+  /* Legacy compat aliases */
   --bg: var(--arc-bg);
   --surface: var(--arc-surface);
   --border: var(--arc-surface-light);
@@ -51,9 +84,9 @@
   --success: var(--arc-success);
   --danger: var(--arc-danger);
   --warning: var(--arc-warning);
-  --accent: var(--arc-green);
-  --accent-dim: var(--arc-green-dim);
-  --accent-glow: var(--arc-green-glow);
+  --accent: var(--px-green);
+  --accent-dim: var(--px-green-dim);
+  --accent-glow: var(--px-green-glow);
 }
 
 body {

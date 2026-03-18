@@ -172,12 +172,12 @@ const home = usePressable(() => emit('home'))
 .result-score {
   font-size: 80px;
   font-weight: 900;
-  color: var(--arc-amber);
+  color: var(--px-green-bright);
   line-height: 1;
   margin-bottom: 8px;
   text-shadow:
-    0 0 24px var(--arc-amber-glow),
-    0 0 60px rgba(255, 184, 0, 0.2);
+    0 0 24px rgba(57, 255, 20, 0.3),
+    0 0 60px rgba(57, 255, 20, 0.12);
 }
 
 .result-best {
@@ -194,11 +194,11 @@ const home = usePressable(() => emit('home'))
 .new-record {
   font-size: 16px;
   font-weight: 900;
-  color: var(--arc-amber);
+  color: var(--px-green);
   letter-spacing: 3px;
   text-shadow:
-    0 0 12px var(--arc-amber-glow),
-    0 0 30px rgba(255, 184, 0, 0.2);
+    0 0 12px rgba(57, 255, 20, 0.3),
+    0 0 30px rgba(57, 255, 20, 0.15);
   margin-top: 12px;
   animation: pulse 0.6s ease-in-out infinite;
 }
@@ -236,8 +236,8 @@ const home = usePressable(() => emit('home'))
 }
 
 .arc-btn--primary {
-  background: #0c140c;
-  color: #8cc890;
+  background: var(--px-green-bg);
+  color: var(--px-green);
   border: 2px solid #4a5648;
   box-shadow:
     inset 1px 1px 0 #5a6858,
@@ -245,9 +245,9 @@ const home = usePressable(() => emit('home'))
 }
 
 .arc-btn--primary:hover {
-  background: #101c10;
-  border-color: #5a6a56;
-  color: #a0dca4;
+  background: var(--px-green-bg-hover);
+  border-color: var(--px-green-border-hover);
+  color: var(--px-green-bright);
   box-shadow:
     0 0 12px rgba(57, 255, 20, 0.08),
     inset 1px 1px 0 #6a7a66,
@@ -256,7 +256,7 @@ const home = usePressable(() => emit('home'))
 
 .arc-btn--ghost {
   background: #0c0c0e;
-  color: #706e68;
+  color: var(--px-neutral-dim);
   border: 2px solid #333330;
   box-shadow:
     inset 1px 1px 0 #2a2a28,
@@ -264,7 +264,7 @@ const home = usePressable(() => emit('home'))
 }
 
 .arc-btn--ghost:hover {
-  color: #9a9890;
+  color: var(--px-neutral);
   border-color: #4a4a46;
   background: #141416;
 }

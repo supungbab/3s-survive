@@ -1,22 +1,12 @@
 import { useSettings } from './useSettings'
-
-let audioCtx: AudioContext | null = null
-
-function getContext(): AudioContext {
-  if (!audioCtx) {
-    audioCtx = new AudioContext()
-  }
-  return audioCtx
-}
+import { getAudioContext } from './audioContext'
 
 function playTone(frequency: number, duration: number, type: OscillatorType = 'sine') {
   const { soundEnabled, volume } = useSettings()
   if (!soundEnabled.value) return
 
-  const ctx = getContext()
-  if (ctx.state === 'suspended') {
-    ctx.resume()
-  }
+  const ctx = getAudioContext()
+  if (ctx.state === 'suspended') return // not ready yet, skip silently
 
   const osc = ctx.createOscillator()
   const gain = ctx.createGain()
@@ -54,7 +44,7 @@ export function useAudio() {
   }
 
   function ensureContext() {
-    getContext()
+    getAudioContext()
   }
 
   return { playSuccess, playFail, playTick, ensureContext }

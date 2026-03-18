@@ -1,4 +1,7 @@
+import { useAudio } from './useAudio'
+
 export function usePressable(action: () => void) {
+  const { playTick } = useAudio()
   let timer: ReturnType<typeof setTimeout> | null = null
 
   return {
@@ -7,6 +10,7 @@ export function usePressable(action: () => void) {
       if (timer) clearTimeout(timer)
       el.classList.add('active')
       timer = setTimeout(() => el.classList.remove('active'), 150)
+      playTick()
       action()
     },
   }

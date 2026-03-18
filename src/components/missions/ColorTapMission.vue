@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { MissionColor } from '@/types/game'
+import { useAudio } from '@/composables/useAudio'
+
+const { playTick } = useAudio()
 
 const props = defineProps<{
   targetColor: MissionColor
@@ -28,6 +31,7 @@ const GLOW_MAP: Record<MissionColor, string> = {
 }
 
 function handleTap(color: MissionColor) {
+  playTick()
   const correct = props.negative
     ? color !== props.targetColor
     : color === props.targetColor

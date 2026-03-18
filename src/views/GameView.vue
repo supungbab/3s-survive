@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGameState } from '@/composables/useGameState'
 import { useInputDetector } from '@/composables/useInputDetector'
+import { useSceneTransition } from '@/composables/useSceneTransition'
 import TimerBar from '@/components/TimerBar.vue'
 import ScoreDisplay from '@/components/ScoreDisplay.vue'
 import MissionText from '@/components/MissionText.vue'
@@ -17,6 +18,7 @@ import DoNothingMission from '@/components/missions/DoNothingMission.vue'
 import SequenceMission from '@/components/missions/SequenceMission.vue'
 
 const router = useRouter()
+const { transition, afterTransition } = useSceneTransition()
 const missionArea = ref<HTMLElement | null>(null)
 
 const {
@@ -60,13 +62,14 @@ function handleRestart() {
 }
 
 function handleHome() {
-  router.push('/')
+  transition(() => router.push('/'))
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (missionArea.value) {
     bind(missionArea.value)
   }
+  await afterTransition()
   startGame()
 })
 
@@ -239,7 +242,7 @@ onUnmounted(() => {
 }
 
 .phase-badge.success {
-  color: #8cc890;
+  color: var(--px-green);
   font-size: 32px;
   text-shadow:
     0 0 12px rgba(57, 255, 20, 0.3),
