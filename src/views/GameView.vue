@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import type { MissionType } from '@/types/mission'
 import { useGameState } from '@/composables/useGameState'
 import { useInputDetector } from '@/composables/useInputDetector'
 import { useSceneTransition } from '@/composables/useSceneTransition'
@@ -42,8 +43,39 @@ import BroadcastMission from '@/components/missions/BroadcastMission.vue'
 import ScanMission from '@/components/missions/ScanMission.vue'
 import ShelterMission from '@/components/missions/ShelterMission.vue'
 import MorseMission from '@/components/missions/MorseMission.vue'
+import HeartbeatMission from '@/components/missions/HeartbeatMission.vue'
+import VentMission from '@/components/missions/VentMission.vue'
+import FlickerTapMission from '@/components/missions/FlickerTapMission.vue'
+import DecryptMission from '@/components/missions/DecryptMission.vue'
+import GeigerMission from '@/components/missions/GeigerMission.vue'
+import LockpickMission from '@/components/missions/LockpickMission.vue'
+import DecontamMission from '@/components/missions/DecontamMission.vue'
+import BloodTypeMission from '@/components/missions/BloodTypeMission.vue'
+import PowerGridMission from '@/components/missions/PowerGridMission.vue'
+import DefuseMission from '@/components/missions/DefuseMission.vue'
+import TriageMission from '@/components/missions/TriageMission.vue'
+import ParadropMission from '@/components/missions/ParadropMission.vue'
+import QuarantineMission from '@/components/missions/QuarantineMission.vue'
+import DeadDropMission from '@/components/missions/DeadDropMission.vue'
+import FrequencyJamMission from '@/components/missions/FrequencyJamMission.vue'
+import SosFlashMission from '@/components/missions/SosFlashMission.vue'
+import AirlockMission from '@/components/missions/AirlockMission.vue'
+import RadarPingMission from '@/components/missions/RadarPingMission.vue'
+import SiphonMission from '@/components/missions/SiphonMission.vue'
+import FirewallMission from '@/components/missions/FirewallMission.vue'
+import CompassMission from '@/components/missions/CompassMission.vue'
+import CrankMission from '@/components/missions/CrankMission.vue'
+import RationMission from '@/components/missions/RationMission.vue'
+import DetoxMission from '@/components/missions/DetoxMission.vue'
+import BlackoutMission from '@/components/missions/BlackoutMission.vue'
+import OverrideMission from '@/components/missions/OverrideMission.vue'
+import PressureMission from '@/components/missions/PressureMission.vue'
+import SpliceMission from '@/components/missions/SpliceMission.vue'
+import DistressMission from '@/components/missions/DistressMission.vue'
+import ElevatorMission from '@/components/missions/ElevatorMission.vue'
 
 const router = useRouter()
+const route = useRoute()
 const { transition, afterTransition } = useSceneTransition()
 const missionArea = ref<HTMLElement | null>(null)
 
@@ -65,6 +97,7 @@ const {
   doubleSwipeCount,
   restart,
   clearAllTimers,
+  setForcedMission,
 } = useGameState()
 
 // State guard (the-perfect pattern: handler 내부에서 상태 체크 후 early return)
@@ -98,6 +131,12 @@ function handleHome() {
 }
 
 onMounted(async () => {
+  // 디버그: ?mission=TUNE 형식으로 특정 미션 강제
+  const forcedMission = route.query.mission as string | undefined
+  if (forcedMission) {
+    setForcedMission(forcedMission as MissionType)
+  }
+
   if (missionArea.value) {
     bind(missionArea.value)
   }
@@ -323,6 +362,149 @@ onUnmounted(() => {
             :morse-pattern="mission.morsePattern!"
             @tap="handleColorTap"
           />
+          <DefuseMission
+            v-else-if="mission.type === 'DEFUSE'"
+            :wire-count="mission.wireCount!"
+            @tap="handleColorTap"
+          />
+          <TriageMission
+            v-else-if="mission.type === 'TRIAGE'"
+            :triage-count="mission.triageCount!"
+            @tap="handleColorTap"
+          />
+          <ParadropMission
+            v-else-if="mission.type === 'PARADROP'"
+            :direction="mission.swipeDirection!"
+          />
+          <HeartbeatMission
+            v-else-if="mission.type === 'HEARTBEAT'"
+            @tap="handleColorTap"
+          />
+          <VentMission
+            v-else-if="mission.type === 'VENT'"
+          />
+          <FlickerTapMission
+            v-else-if="mission.type === 'FLICKER_TAP'"
+            @tap="handleColorTap"
+          />
+          <DecryptMission
+            v-else-if="mission.type === 'DECRYPT'"
+            :decrypt-scrambled="mission.decryptScrambled!"
+            :decrypt-answer="mission.decryptAnswer!"
+            :decrypt-choices="mission.decryptChoices!"
+            @tap="handleColorTap"
+          />
+          <GeigerMission
+            v-else-if="mission.type === 'GEIGER'"
+            @tap="handleColorTap"
+          />
+          <LockpickMission
+            v-else-if="mission.type === 'LOCKPICK'"
+            :lockpick-steps="mission.lockpickSteps!"
+            @tap="handleColorTap"
+          />
+          <DecontamMission
+            v-else-if="mission.type === 'DECONTAM'"
+            :decontam-count="mission.decontamCount!"
+            @tap="handleColorTap"
+          />
+          <BloodTypeMission
+            v-else-if="mission.type === 'BLOOD_TYPE'"
+            :blood-target="mission.bloodTarget!"
+            :blood-choices="mission.bloodChoices!"
+            @tap="handleColorTap"
+          />
+          <PowerGridMission
+            v-else-if="mission.type === 'POWER_GRID'"
+            :grid-switch-count="mission.gridSwitchCount!"
+            @tap="handleColorTap"
+          />
+          <QuarantineMission
+            v-else-if="mission.type === 'QUARANTINE'"
+            @tap="handleColorTap"
+          />
+          <DeadDropMission
+            v-else-if="mission.type === 'DEAD_DROP'"
+            :dead-drop-coord="mission.deadDropCoord!"
+            :dead-drop-grid-size="mission.deadDropGridSize!"
+            @tap="handleColorTap"
+          />
+          <FrequencyJamMission
+            v-else-if="mission.type === 'FREQUENCY_JAM'"
+            @tap="handleColorTap"
+          />
+          <SosFlashMission
+            v-else-if="mission.type === 'SOS_FLASH'"
+            @tap="handleColorTap"
+          />
+          <AirlockMission
+            v-else-if="mission.type === 'AIRLOCK'"
+            @tap="handleColorTap"
+          />
+          <RadarPingMission
+            v-else-if="mission.type === 'RADAR_PING'"
+            @tap="handleColorTap"
+          />
+          <SiphonMission
+            v-else-if="mission.type === 'SIPHON'"
+            @tap="handleColorTap"
+          />
+          <FirewallMission
+            v-else-if="mission.type === 'FIREWALL'"
+            :firewall-count="mission.firewallCount!"
+            @tap="handleColorTap"
+          />
+          <CompassMission
+            v-else-if="mission.type === 'COMPASS'"
+            :direction="mission.swipeDirection!"
+          />
+          <CrankMission
+            v-else-if="mission.type === 'CRANK'"
+            :crank-rotations="mission.crankRotations!"
+            @tap="handleColorTap"
+          />
+          <RationMission
+            v-else-if="mission.type === 'RATION'"
+            :ration-people="mission.rationPeople!"
+            :ration-per-person="mission.rationPerPerson!"
+            :ration-choices="mission.rationChoices!"
+            @tap="handleColorTap"
+          />
+          <DetoxMission
+            v-else-if="mission.type === 'DETOX'"
+            :detox-color="mission.detoxColor!"
+            :detox-choices="mission.detoxChoices!"
+            @tap="handleColorTap"
+          />
+          <BlackoutMission
+            v-else-if="mission.type === 'BLACKOUT'"
+            @tap="handleColorTap"
+          />
+          <OverrideMission
+            v-else-if="mission.type === 'OVERRIDE'"
+            :override-code="mission.overrideCode!"
+            @tap="handleColorTap"
+          />
+          <PressureMission
+            v-else-if="mission.type === 'PRESSURE'"
+            @tap="handleColorTap"
+          />
+          <SpliceMission
+            v-else-if="mission.type === 'SPLICE'"
+            :splice-colors="mission.spliceColors!"
+            @tap="handleColorTap"
+          />
+          <DistressMission
+            v-else-if="mission.type === 'DISTRESS'"
+            :distress-pattern="mission.distressPattern!"
+            @tap="handleColorTap"
+          />
+          <ElevatorMission
+            v-else-if="mission.type === 'ELEVATOR'"
+            :elevator-current="mission.elevatorCurrent!"
+            :elevator-target="mission.elevatorTarget!"
+            @tap="handleColorTap"
+          />
         </div>
       </template>
 
@@ -341,10 +523,10 @@ onUnmounted(() => {
 
       <!-- Phase indicator -->
       <div class="phase-badge" :class="{ success: phase === 'SUCCESS', fail: phase === 'FAIL' }">
-        <template v-if="phase === 'SHOWING'">준비...</template>
-        <template v-else-if="phase === 'SUB_SHOWING'">다음!</template>
+        <template v-if="phase === 'SHOWING'">READY...</template>
+        <template v-else-if="phase === 'SUB_SHOWING'">NEXT!</template>
         <template v-else-if="phase === 'SUCCESS'">+1</template>
-        <template v-else-if="phase === 'FAIL'">실패!</template>
+        <template v-else-if="phase === 'FAIL'">FAIL</template>
         <template v-else>&nbsp;</template>
       </div>
     </div>

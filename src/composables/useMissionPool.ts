@@ -10,16 +10,16 @@ interface DifficultyBracket {
 const DIFFICULTY_ORDER: Record<Difficulty, number> = { EASY: 0, NORMAL: 1, HARD: 2 }
 
 const BRACKETS: DifficultyBracket[] = [
-  { maxScore: 5, missionTypes: ['COLOR_TAP', 'SWIPE', 'MULTI_TAP', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'QUICK_TAP', 'CATCH', 'DRAG_TO', 'STATIC_CLEAR', 'SCAN'], maxDifficulty: 'EASY' },
-  { maxScore: 15, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'ODD_ONE_OUT', 'QUICK_TAP', 'CATCH', 'COUNT_TAP', 'PATTERN_TAP', 'DRAG_TO', 'PINCH', 'ROTATE', 'COLOR_SWIPE', 'TUNE', 'POWER_UP', 'SHELTER', 'STATIC_CLEAR', 'SCAN'], maxDifficulty: 'NORMAL' },
-  { maxScore: 30, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'LONG_PRESS', 'COLOR_TAP_NEGATIVE', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'ODD_ONE_OUT', 'QUICK_TAP', 'CATCH', 'COUNT_TAP', 'PATTERN_TAP', 'DRAG_TO', 'PINCH', 'ROTATE', 'COLOR_SWIPE', 'HOLD_AND_TAP', 'TUNE', 'POWER_UP', 'SHELTER', 'STATIC_CLEAR', 'SCAN'], maxDifficulty: 'NORMAL' },
-  { maxScore: Infinity, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'LONG_PRESS', 'DUAL_TAP', 'DO_NOTHING', 'SEQUENCE', 'COLOR_TAP_NEGATIVE', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'ODD_ONE_OUT', 'MATH_TAP', 'MIRROR_SWIPE', 'QUICK_TAP', 'CATCH', 'COUNT_TAP', 'PATTERN_TAP', 'SIMON', 'FAKE_OUT', 'DRAG_TO', 'PINCH', 'ROTATE', 'COLOR_SWIPE', 'HOLD_AND_TAP', 'DUAL_SWIPE', 'RHYTHM', 'TUNE', 'POWER_UP', 'WIRE_CUT', 'STATIC_CLEAR', 'BROADCAST', 'SCAN', 'SHELTER', 'MORSE'], maxDifficulty: 'HARD' },
+  { maxScore: 5, missionTypes: ['COLOR_TAP', 'SWIPE', 'MULTI_TAP', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'QUICK_TAP', 'CATCH', 'DRAG_TO', 'STATIC_CLEAR', 'SCAN', 'HEARTBEAT', 'VENT', 'FLICKER_TAP', 'SOS_FLASH', 'AIRLOCK', 'RADAR_PING'], maxDifficulty: 'EASY' },
+  { maxScore: 15, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'ODD_ONE_OUT', 'QUICK_TAP', 'CATCH', 'COUNT_TAP', 'PATTERN_TAP', 'DRAG_TO', 'PINCH', 'ROTATE', 'COLOR_SWIPE', 'TUNE', 'POWER_UP', 'SHELTER', 'STATIC_CLEAR', 'SCAN', 'HEARTBEAT', 'VENT', 'FLICKER_TAP', 'DECRYPT', 'GEIGER', 'LOCKPICK', 'DECONTAM', 'BLOOD_TYPE', 'POWER_GRID', 'SOS_FLASH', 'AIRLOCK', 'RADAR_PING', 'SIPHON', 'FIREWALL', 'COMPASS', 'CRANK', 'RATION', 'DETOX'], maxDifficulty: 'NORMAL' },
+  { maxScore: 30, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'LONG_PRESS', 'COLOR_TAP_NEGATIVE', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'ODD_ONE_OUT', 'QUICK_TAP', 'CATCH', 'COUNT_TAP', 'PATTERN_TAP', 'DRAG_TO', 'PINCH', 'ROTATE', 'COLOR_SWIPE', 'HOLD_AND_TAP', 'TUNE', 'POWER_UP', 'SHELTER', 'STATIC_CLEAR', 'SCAN', 'HEARTBEAT', 'VENT', 'FLICKER_TAP', 'DECRYPT', 'GEIGER', 'LOCKPICK', 'DECONTAM', 'BLOOD_TYPE', 'POWER_GRID', 'SOS_FLASH', 'AIRLOCK', 'RADAR_PING', 'SIPHON', 'FIREWALL', 'COMPASS', 'CRANK', 'RATION', 'DETOX'], maxDifficulty: 'NORMAL' },
+  { maxScore: Infinity, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'LONG_PRESS', 'DUAL_TAP', 'DO_NOTHING', 'SEQUENCE', 'COLOR_TAP_NEGATIVE', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'ODD_ONE_OUT', 'MATH_TAP', 'MIRROR_SWIPE', 'QUICK_TAP', 'CATCH', 'COUNT_TAP', 'PATTERN_TAP', 'SIMON', 'FAKE_OUT', 'DRAG_TO', 'PINCH', 'ROTATE', 'COLOR_SWIPE', 'HOLD_AND_TAP', 'DUAL_SWIPE', 'RHYTHM', 'TUNE', 'POWER_UP', 'WIRE_CUT', 'STATIC_CLEAR', 'BROADCAST', 'SCAN', 'SHELTER', 'MORSE', 'HEARTBEAT', 'VENT', 'FLICKER_TAP', 'DECRYPT', 'GEIGER', 'LOCKPICK', 'DECONTAM', 'BLOOD_TYPE', 'POWER_GRID', 'DEFUSE', 'TRIAGE', 'PARADROP', 'QUARANTINE', 'DEAD_DROP', 'FREQUENCY_JAM', 'SOS_FLASH', 'AIRLOCK', 'RADAR_PING', 'SIPHON', 'FIREWALL', 'COMPASS', 'CRANK', 'RATION', 'DETOX', 'BLACKOUT', 'OVERRIDE', 'PRESSURE', 'SPLICE', 'DISTRESS', 'ELEVATOR'], maxDifficulty: 'HARD' },
 ]
 
 /** 다중 미션 시 제외할 타입 */
-const MULTI_MISSION_EXCLUDE: MissionType[] = ['DO_NOTHING', 'LONG_PRESS', 'DOUBLE_SWIPE', 'SIMON', 'CATCH', 'RHYTHM', 'HOLD_AND_TAP', 'BROADCAST', 'MORSE', 'POWER_UP']
+const MULTI_MISSION_EXCLUDE: MissionType[] = ['DO_NOTHING', 'LONG_PRESS', 'DOUBLE_SWIPE', 'SIMON', 'CATCH', 'RHYTHM', 'HOLD_AND_TAP', 'BROADCAST', 'MORSE', 'POWER_UP', 'FREQUENCY_JAM', 'QUARANTINE', 'HEARTBEAT', 'GEIGER', 'LOCKPICK', 'SOS_FLASH', 'SIPHON', 'BLACKOUT', 'PRESSURE', 'DISTRESS', 'CRANK', 'RADAR_PING']
 /** 3개 이상 미션 시 추가 제외 */
-const TRIPLE_MISSION_EXCLUDE: MissionType[] = ['SEQUENCE', 'MIRROR_SWIPE', 'PATTERN_TAP', 'COUNT_TAP', 'PINCH', 'ROTATE', 'TUNE', 'WIRE_CUT', 'STATIC_CLEAR', 'SHELTER']
+const TRIPLE_MISSION_EXCLUDE: MissionType[] = ['SEQUENCE', 'MIRROR_SWIPE', 'PATTERN_TAP', 'COUNT_TAP', 'PINCH', 'ROTATE', 'TUNE', 'WIRE_CUT', 'STATIC_CLEAR', 'SHELTER', 'DEFUSE', 'TRIAGE', 'POWER_GRID', 'DECONTAM', 'FLICKER_TAP', 'FIREWALL', 'OVERRIDE', 'SPLICE', 'ELEVATOR', 'DETOX']
 
 export function getMissionCount(score: number): number {
   if (score <= 5) return 1
@@ -30,6 +30,11 @@ export function getMissionCount(score: number): number {
 
 export function useMissionPool() {
   let lastMissionType: MissionType | null = null
+  let forcedType: MissionType | null = null
+
+  function setForcedType(type: MissionType | null) {
+    forcedType = type
+  }
 
   function getAvailableTypes(score: number): MissionType[] {
     const bracket = BRACKETS.find((b) => score <= b.maxScore) ?? BRACKETS[BRACKETS.length - 1]
@@ -37,6 +42,13 @@ export function useMissionPool() {
   }
 
   function pickMission(score: number): MissionParams {
+    // 강제 미션 모드: 레지스트리에서 해당 타입의 첫 정의 사용
+    if (forcedType) {
+      const matching = MISSION_REGISTRY.filter((d) => d.type === forcedType)
+      const definition = matching[Math.floor(Math.random() * matching.length)]
+      return definition.generate()
+    }
+
     const types = getAvailableTypes(score)
     // Filter out last mission type to avoid repetition
     const filtered = types.length > 1
@@ -58,6 +70,7 @@ export function useMissionPool() {
   }
 
   function pickMissions(score: number): MissionParams[] {
+    if (forcedType) return [pickMission(score)]
     const count = getMissionCount(score)
     if (count === 1) return [pickMission(score)]
 
@@ -91,7 +104,7 @@ export function useMissionPool() {
       // 다중 미션 시 MULTI_TAP tapCount 축소 (2~3)
       if (mission.type === 'MULTI_TAP' && mission.tapCount && mission.tapCount > 3) {
         const reducedCount = Math.random() < 0.5 ? 2 : 3
-        mission = { ...mission, tapCount: reducedCount, text: `${reducedCount}번 탭!` }
+        mission = { ...mission, tapCount: reducedCount, text: `TAP x${reducedCount}` }
       }
 
       missions.push(mission)
@@ -106,5 +119,5 @@ export function useMissionPool() {
     lastMissionType = null
   }
 
-  return { pickMission, pickMissions, getAvailableTypes, reset }
+  return { pickMission, pickMissions, getAvailableTypes, reset, setForcedType }
 }

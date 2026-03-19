@@ -1,10 +1,10 @@
 import type { Difficulty, MissionColor, SequenceStep, SwipeDirection } from './game'
 
 const DIRECTION_ICONS: Record<SwipeDirection, string> = {
-  UP: '위',
-  DOWN: '아래',
-  LEFT: '왼쪽',
-  RIGHT: '오른쪽',
+  UP: '↑',
+  DOWN: '↓',
+  LEFT: '←',
+  RIGHT: '→',
 }
 
 export type MissionType =
@@ -45,6 +45,36 @@ export type MissionType =
   | 'SCAN'
   | 'SHELTER'
   | 'MORSE'
+  | 'HEARTBEAT'
+  | 'VENT'
+  | 'FLICKER_TAP'
+  | 'DECRYPT'
+  | 'GEIGER'
+  | 'LOCKPICK'
+  | 'DECONTAM'
+  | 'BLOOD_TYPE'
+  | 'POWER_GRID'
+  | 'DEFUSE'
+  | 'TRIAGE'
+  | 'PARADROP'
+  | 'QUARANTINE'
+  | 'DEAD_DROP'
+  | 'FREQUENCY_JAM'
+  | 'SOS_FLASH'
+  | 'AIRLOCK'
+  | 'RADAR_PING'
+  | 'SIPHON'
+  | 'FIREWALL'
+  | 'COMPASS'
+  | 'CRANK'
+  | 'RATION'
+  | 'DETOX'
+  | 'BLACKOUT'
+  | 'OVERRIDE'
+  | 'PRESSURE'
+  | 'SPLICE'
+  | 'DISTRESS'
+  | 'ELEVATOR'
 
 export type TapZone = 'LEFT' | 'RIGHT'
 export type SizeTarget = 'BIG' | 'SMALL'
@@ -103,6 +133,44 @@ export interface MissionParams {
   morsePattern?: ('DOT' | 'DASH')[]
   // POWER_UP
   requiredSwipes?: number
+  // DECRYPT
+  decryptScrambled?: string
+  decryptAnswer?: string
+  decryptChoices?: string[]
+  // LOCKPICK
+  lockpickSteps?: number
+  // DECONTAM
+  decontamCount?: number
+  // BLOOD_TYPE
+  bloodTarget?: string
+  bloodChoices?: string[]
+  // POWER_GRID
+  gridSwitchCount?: number
+  // TRIAGE
+  triageCount?: number
+  // DEAD_DROP
+  deadDropCoord?: [number, number]
+  deadDropGridSize?: number
+  // FIREWALL
+  firewallCount?: number
+  // RATION
+  rationPeople?: number
+  rationPerPerson?: number
+  rationChoices?: number[]
+  // DETOX
+  detoxColor?: MissionColor
+  detoxChoices?: MissionColor[]
+  // OVERRIDE
+  overrideCode?: number[]
+  // SPLICE
+  spliceColors?: MissionColor[]
+  // DISTRESS
+  distressPattern?: number[]
+  // ELEVATOR
+  elevatorCurrent?: number
+  elevatorTarget?: number
+  // CRANK
+  crankRotations?: number
 }
 
 export interface MissionDefinition {
@@ -112,20 +180,20 @@ export interface MissionDefinition {
 }
 
 const COLOR_NAMES: Record<MissionColor, string> = {
-  red: '빨간색',
-  blue: '파란색',
-  yellow: '노란색',
-  green: '초록색',
-  purple: '보라색',
+  red: 'RED',
+  blue: 'BLUE',
+  yellow: 'YELLOW',
+  green: 'GREEN',
+  purple: 'PURPLE',
 }
 
 const ALL_COLORS: MissionColor[] = ['red', 'blue', 'yellow', 'green', 'purple']
 
 const DIRECTION_NAMES: Record<SwipeDirection, string> = {
-  UP: '위로!',
-  DOWN: '아래로!',
-  LEFT: '왼쪽으로!',
-  RIGHT: '오른쪽으로!',
+  UP: '↑ SWIPE',
+  DOWN: '↓ SWIPE',
+  LEFT: '← SWIPE',
+  RIGHT: '→ SWIPE',
 }
 
 const OPPOSITE: Record<SwipeDirection, SwipeDirection> = {
@@ -164,7 +232,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'COLOR_TAP',
         difficulty: 'EASY',
-        text: `${COLOR_NAMES[target]} 탭!`,
+        text: `${COLOR_NAMES[target]} TAP`,
         targetColor: target,
         colors: generateColorChoices(target, 3),
       }
@@ -193,7 +261,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'REVERSE_SWIPE',
         difficulty: 'NORMAL',
-        text: `반대로! ${DIRECTION_NAMES[dir]}`,
+        text: `REVERSE ${DIRECTION_NAMES[dir]}`,
         swipeDirection: OPPOSITE[dir],
       }
     },
@@ -207,7 +275,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'MULTI_TAP',
         difficulty: 'NORMAL',
-        text: `${count}번 탭!`,
+        text: `TAP x${count}`,
         tapCount: count,
       }
     },
@@ -220,7 +288,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'LONG_PRESS',
         difficulty: 'NORMAL',
-        text: '길게 눌러!',
+        text: 'HOLD',
       }
     },
   },
@@ -232,7 +300,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'DUAL_TAP',
         difficulty: 'HARD',
-        text: '둘 다 탭!',
+        text: 'DUAL TAP',
       }
     },
   },
@@ -244,7 +312,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'MULTI_TAP',
         difficulty: 'EASY',
-        text: '2번 탭!',
+        text: 'TAP x2',
         tapCount: 2,
       }
     },
@@ -257,7 +325,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'DO_NOTHING',
         difficulty: 'HARD',
-        text: '누르지 마!',
+        text: 'STANDBY',
       }
     },
   },
@@ -270,7 +338,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'COLOR_TAP_NEGATIVE',
         difficulty: 'HARD',
-        text: `${COLOR_NAMES[target]} 빼고 탭!`,
+        text: `NOT ${COLOR_NAMES[target]}`,
         targetColor: target,
         colors: shuffle(ALL_COLORS),
         negative: true,
@@ -295,7 +363,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
         actions.push(pickRandom(pool))
       }
       const text = actions
-        .map((s) => (s.action === 'TAP' ? '탭' : DIRECTION_ICONS[s.direction]))
+        .map((s) => (s.action === 'TAP' ? '■' : DIRECTION_ICONS[s.direction]))
         .join(' → ')
       return {
         type: 'SEQUENCE',
@@ -314,7 +382,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'TAP_ZONE',
         difficulty: 'EASY',
-        text: zone === 'LEFT' ? '왼쪽!' : '오른쪽!',
+        text: zone === 'LEFT' ? '◀ LEFT' : 'RIGHT ▶',
         targetZone: zone,
       }
     },
@@ -332,7 +400,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'SIZE_TAP',
         difficulty: 'EASY',
-        text: target === 'BIG' ? '큰 거 탭!' : '작은 거 탭!',
+        text: target === 'BIG' ? 'TAP MAX' : 'TAP MIN',
         targetSize: target,
         sizes: shuffle(baseSizes),
       }
@@ -361,7 +429,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'DOUBLE_SWIPE',
         difficulty: 'EASY',
-        text: `${DIRECTION_ICONS[dir]}로 2번!`,
+        text: `${DIRECTION_ICONS[dir]} x2`,
         swipeDirection: dir,
         swipeCount: 2,
       }
@@ -378,7 +446,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'ODD_ONE_OUT',
         difficulty: 'NORMAL',
-        text: '다른 거 탭!',
+        text: 'ANOMALY DETECT',
         oddVariant: variant,
         itemCount: count,
         oddIndex: oddIdx,
@@ -436,7 +504,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'MIRROR_SWIPE',
         difficulty: 'HARD',
-        text: `거울! ${DIRECTION_NAMES[dir]}`,
+        text: `MIRROR ${DIRECTION_NAMES[dir]}`,
         swipeDirection: MIRROR[dir],
       }
     },
@@ -449,7 +517,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'QUICK_TAP',
         difficulty: 'EASY',
-        text: '지금!',
+        text: 'NOW!',
       }
     },
   },
@@ -461,7 +529,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'CATCH',
         difficulty: 'EASY',
-        text: '잡아!',
+        text: 'INTERCEPT',
       }
     },
   },
@@ -474,7 +542,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'COUNT_TAP',
         difficulty: 'NORMAL',
-        text: '몇 개? 탭으로!',
+        text: 'COUNT & TAP',
         tapCount: count,
         countItems: count,
       }
@@ -489,7 +557,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'PATTERN_TAP',
         difficulty: 'NORMAL',
-        text: '순서대로!',
+        text: 'SEQUENCE',
         patternLength: length,
       }
     },
@@ -508,7 +576,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'SIMON',
         difficulty: 'HARD',
-        text: '기억해!',
+        text: 'MEMORIZE',
         simonSequence: seq,
         simonButtons: btnCount,
       }
@@ -539,7 +607,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'DRAG_TO',
         difficulty: 'EASY',
-        text: '끌어!',
+        text: 'DRAG',
       }
     },
   },
@@ -552,7 +620,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'PINCH',
         difficulty: 'NORMAL',
-        text: dir === 'IN' ? '오므려!' : '벌려!',
+        text: dir === 'IN' ? 'PINCH IN' : 'PINCH OUT',
         pinchDirection: dir,
       }
     },
@@ -566,7 +634,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'ROTATE',
         difficulty: 'NORMAL',
-        text: dir === 'CW' ? '시계방향!' : '반시계!',
+        text: dir === 'CW' ? 'ROTATE ↻' : 'ROTATE ↺',
         rotateDirection: dir,
       }
     },
@@ -598,7 +666,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'HOLD_AND_TAP',
         difficulty: 'NORMAL',
-        text: '꾹 + 탭!',
+        text: 'HOLD + TAP',
       }
     },
   },
@@ -616,7 +684,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'DUAL_SWIPE',
         difficulty: 'HARD',
-        text: `${ARROW[pair[0]]}${ARROW[pair[1]]} 동시!`,
+        text: `${ARROW[pair[0]]}${ARROW[pair[1]]} DUAL`,
         dualSwipeDirections: pair,
       }
     },
@@ -630,7 +698,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'RHYTHM',
         difficulty: 'HARD',
-        text: '박자 맞춰!',
+        text: 'SYNC PULSE',
         beatCount: count,
         beatInterval: 700,
       }
@@ -644,7 +712,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'TUNE',
         difficulty: 'NORMAL',
-        text: '주파수 맞춰!',
+        text: 'TUNE FREQ',
       }
     },
   },
@@ -657,7 +725,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'POWER_UP',
         difficulty: 'NORMAL',
-        text: '충전!',
+        text: 'CHARGE',
         requiredSwipes: swipes,
       }
     },
@@ -671,7 +739,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'WIRE_CUT',
         difficulty: 'HARD',
-        text: '해체!',
+        text: 'DISARM',
         wireCount: count,
       }
     },
@@ -684,7 +752,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'STATIC_CLEAR',
         difficulty: 'EASY',
-        text: '잡음 제거!',
+        text: 'CLEAR STATIC',
       }
     },
   },
@@ -696,7 +764,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'BROADCAST',
         difficulty: 'HARD',
-        text: '신호 보내!',
+        text: 'BROADCAST',
       }
     },
   },
@@ -708,7 +776,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'SCAN',
         difficulty: 'EASY',
-        text: '스캔!',
+        text: 'SCAN',
       }
     },
   },
@@ -720,7 +788,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'SHELTER',
         difficulty: 'NORMAL',
-        text: '대피!',
+        text: 'EVACUATE',
       }
     },
   },
@@ -740,8 +808,447 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       return {
         type: 'MORSE',
         difficulty: 'HARD',
-        text: '모스 부호!',
+        text: 'MORSE CODE',
         morsePattern: pat,
+      }
+    },
+  },
+  // HEARTBEAT - EASY
+  {
+    type: 'HEARTBEAT',
+    difficulty: 'EASY',
+    generate() {
+      return {
+        type: 'HEARTBEAT',
+        difficulty: 'EASY',
+        text: 'REVIVE',
+      }
+    },
+  },
+  // VENT - EASY
+  {
+    type: 'VENT',
+    difficulty: 'EASY',
+    generate() {
+      return {
+        type: 'VENT',
+        difficulty: 'EASY',
+        text: '↑ VENT',
+        swipeDirection: 'UP' as SwipeDirection,
+      }
+    },
+  },
+  // FLICKER_TAP - EASY
+  {
+    type: 'FLICKER_TAP',
+    difficulty: 'EASY',
+    generate() {
+      return {
+        type: 'FLICKER_TAP',
+        difficulty: 'EASY',
+        text: 'CATCH SIGNAL',
+      }
+    },
+  },
+  // DECRYPT - NORMAL
+  {
+    type: 'DECRYPT',
+    difficulty: 'NORMAL',
+    generate() {
+      const words = ['EVAC', 'HELP', 'SAFE', 'OPEN', 'EXIT', 'FUEL', 'SEND', 'MOVE']
+      const word = pickRandom(words)
+      const idx = Math.floor(Math.random() * word.length)
+      const answer = word[idx]
+      const scrambled = word.split('').map((c, i) => (i === idx ? '▒' : c)).join('')
+      const wrongLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(c => c !== answer)
+      const choices = shuffle([answer, ...shuffle(wrongLetters).slice(0, 2)])
+      return {
+        type: 'DECRYPT',
+        difficulty: 'NORMAL',
+        text: 'DECRYPT',
+        decryptScrambled: scrambled,
+        decryptAnswer: answer,
+        decryptChoices: choices,
+      }
+    },
+  },
+  // GEIGER - NORMAL
+  {
+    type: 'GEIGER',
+    difficulty: 'NORMAL',
+    generate() {
+      return {
+        type: 'GEIGER',
+        difficulty: 'NORMAL',
+        text: 'MARK HOTSPOT',
+      }
+    },
+  },
+  // LOCKPICK - NORMAL
+  {
+    type: 'LOCKPICK',
+    difficulty: 'NORMAL',
+    generate() {
+      const steps = pickRandom([2, 3])
+      return {
+        type: 'LOCKPICK',
+        difficulty: 'NORMAL',
+        text: 'UNLOCK',
+        lockpickSteps: steps,
+      }
+    },
+  },
+  // DECONTAM - NORMAL
+  {
+    type: 'DECONTAM',
+    difficulty: 'NORMAL',
+    generate() {
+      const count = pickRandom([2, 3, 4])
+      return {
+        type: 'DECONTAM',
+        difficulty: 'NORMAL',
+        text: 'DECONTAM',
+        decontamCount: count,
+      }
+    },
+  },
+  // BLOOD_TYPE - NORMAL
+  {
+    type: 'BLOOD_TYPE',
+    difficulty: 'NORMAL',
+    generate() {
+      const types = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
+      const target = pickRandom(types)
+      const others = types.filter(t => t !== target)
+      const choices = shuffle([target, ...shuffle(others).slice(0, 2)])
+      return {
+        type: 'BLOOD_TYPE',
+        difficulty: 'NORMAL',
+        text: `MATCH ${target}`,
+        bloodTarget: target,
+        bloodChoices: choices,
+      }
+    },
+  },
+  // POWER_GRID - NORMAL
+  {
+    type: 'POWER_GRID',
+    difficulty: 'NORMAL',
+    generate() {
+      const count = pickRandom([3, 4])
+      return {
+        type: 'POWER_GRID',
+        difficulty: 'NORMAL',
+        text: 'RESTORE POWER',
+        gridSwitchCount: count,
+      }
+    },
+  },
+  // DEFUSE - HARD
+  {
+    type: 'DEFUSE',
+    difficulty: 'HARD',
+    generate() {
+      const count = pickRandom([3, 4])
+      return {
+        type: 'DEFUSE',
+        difficulty: 'HARD',
+        text: 'DEFUSE',
+        wireCount: count,
+      }
+    },
+  },
+  // TRIAGE - HARD
+  {
+    type: 'TRIAGE',
+    difficulty: 'HARD',
+    generate() {
+      const count = pickRandom([3, 4])
+      return {
+        type: 'TRIAGE',
+        difficulty: 'HARD',
+        text: 'TRIAGE',
+        triageCount: count,
+      }
+    },
+  },
+  // PARADROP - HARD
+  {
+    type: 'PARADROP',
+    difficulty: 'HARD',
+    generate() {
+      const windDir = pickRandom<SwipeDirection>(['UP', 'DOWN', 'LEFT', 'RIGHT'])
+      return {
+        type: 'PARADROP',
+        difficulty: 'HARD',
+        text: 'PARADROP',
+        swipeDirection: OPPOSITE[windDir],
+      }
+    },
+  },
+  // QUARANTINE - HARD
+  {
+    type: 'QUARANTINE',
+    difficulty: 'HARD',
+    generate() {
+      return {
+        type: 'QUARANTINE',
+        difficulty: 'HARD',
+        text: 'QUARANTINE',
+      }
+    },
+  },
+  // DEAD_DROP - HARD
+  {
+    type: 'DEAD_DROP',
+    difficulty: 'HARD',
+    generate() {
+      const size = 3
+      const row = Math.floor(Math.random() * size)
+      const col = Math.floor(Math.random() * size)
+      return {
+        type: 'DEAD_DROP',
+        difficulty: 'HARD',
+        text: `GRID ${col + 1},${row + 1}`,
+        deadDropCoord: [row, col],
+        deadDropGridSize: size,
+      }
+    },
+  },
+  // FREQUENCY_JAM - HARD
+  {
+    type: 'FREQUENCY_JAM',
+    difficulty: 'HARD',
+    generate() {
+      return {
+        type: 'FREQUENCY_JAM',
+        difficulty: 'HARD',
+        text: 'JAM SIGNAL',
+      }
+    },
+  },
+  // SOS_FLASH - EASY
+  {
+    type: 'SOS_FLASH',
+    difficulty: 'EASY',
+    generate() {
+      return {
+        type: 'SOS_FLASH',
+        difficulty: 'EASY',
+        text: 'SOS',
+      }
+    },
+  },
+  // AIRLOCK - EASY
+  {
+    type: 'AIRLOCK',
+    difficulty: 'EASY',
+    generate() {
+      return {
+        type: 'AIRLOCK',
+        difficulty: 'EASY',
+        text: 'AIRLOCK',
+      }
+    },
+  },
+  // RADAR_PING - EASY
+  {
+    type: 'RADAR_PING',
+    difficulty: 'EASY',
+    generate() {
+      return {
+        type: 'RADAR_PING',
+        difficulty: 'EASY',
+        text: 'PING',
+      }
+    },
+  },
+  // SIPHON - NORMAL
+  {
+    type: 'SIPHON',
+    difficulty: 'NORMAL',
+    generate() {
+      return {
+        type: 'SIPHON',
+        difficulty: 'NORMAL',
+        text: 'SIPHON FUEL',
+      }
+    },
+  },
+  // FIREWALL - NORMAL
+  {
+    type: 'FIREWALL',
+    difficulty: 'NORMAL',
+    generate() {
+      const count = pickRandom([2, 3])
+      return {
+        type: 'FIREWALL',
+        difficulty: 'NORMAL',
+        text: 'BLOCK VIRUS',
+        firewallCount: count,
+      }
+    },
+  },
+  // COMPASS - NORMAL
+  {
+    type: 'COMPASS',
+    difficulty: 'NORMAL',
+    generate() {
+      const dir = pickRandom<SwipeDirection>(['UP', 'DOWN', 'LEFT', 'RIGHT'])
+      return {
+        type: 'COMPASS',
+        difficulty: 'NORMAL',
+        text: 'FOLLOW COMPASS',
+        swipeDirection: dir,
+      }
+    },
+  },
+  // CRANK - NORMAL
+  {
+    type: 'CRANK',
+    difficulty: 'NORMAL',
+    generate() {
+      const rotations = pickRandom([2, 3])
+      return {
+        type: 'CRANK',
+        difficulty: 'NORMAL',
+        text: 'CRANK',
+        crankRotations: rotations,
+      }
+    },
+  },
+  // RATION - NORMAL
+  {
+    type: 'RATION',
+    difficulty: 'NORMAL',
+    generate() {
+      const people = pickRandom([2, 3, 4])
+      const per = pickRandom([2, 3])
+      const answer = people * per
+      const wrongSet = new Set<number>()
+      while (wrongSet.size < 2) {
+        const offset = pickRandom([-2, -1, 1, 2, 3])
+        const wrong = answer + offset
+        if (wrong !== answer && wrong > 0) wrongSet.add(wrong)
+      }
+      return {
+        type: 'RATION',
+        difficulty: 'NORMAL',
+        text: `${people}人 × ${per}EA`,
+        rationPeople: people,
+        rationPerPerson: per,
+        rationChoices: shuffle([answer, ...wrongSet]),
+      }
+    },
+  },
+  // DETOX - NORMAL
+  {
+    type: 'DETOX',
+    difficulty: 'NORMAL',
+    generate() {
+      const target = pickRandom(ALL_COLORS)
+      const choices = shuffle(ALL_COLORS).slice(0, 3)
+      if (!choices.includes(target)) choices[0] = target
+      return {
+        type: 'DETOX',
+        difficulty: 'NORMAL',
+        text: `${COLOR_NAMES[target]} DETOX`,
+        detoxColor: target,
+        detoxChoices: shuffle(choices),
+      }
+    },
+  },
+  // BLACKOUT - HARD
+  {
+    type: 'BLACKOUT',
+    difficulty: 'HARD',
+    generate() {
+      return {
+        type: 'BLACKOUT',
+        difficulty: 'HARD',
+        text: 'BLACKOUT',
+      }
+    },
+  },
+  // OVERRIDE - HARD
+  {
+    type: 'OVERRIDE',
+    difficulty: 'HARD',
+    generate() {
+      const code: number[] = []
+      for (let i = 0; i < 4; i++) {
+        code.push(Math.floor(Math.random() * 10))
+      }
+      return {
+        type: 'OVERRIDE',
+        difficulty: 'HARD',
+        text: 'OVERRIDE',
+        overrideCode: code,
+      }
+    },
+  },
+  // PRESSURE - HARD
+  {
+    type: 'PRESSURE',
+    difficulty: 'HARD',
+    generate() {
+      return {
+        type: 'PRESSURE',
+        difficulty: 'HARD',
+        text: 'PRESSURE',
+      }
+    },
+  },
+  // SPLICE - HARD
+  {
+    type: 'SPLICE',
+    difficulty: 'HARD',
+    generate() {
+      const colors = shuffle<MissionColor>(['red', 'blue', 'green']).slice(0, 3)
+      return {
+        type: 'SPLICE',
+        difficulty: 'HARD',
+        text: 'SPLICE',
+        spliceColors: colors,
+      }
+    },
+  },
+  // DISTRESS - HARD
+  {
+    type: 'DISTRESS',
+    difficulty: 'HARD',
+    generate() {
+      // 불규칙 간격 패턴 (ms)
+      const patterns: number[][] = [
+        [400, 800],
+        [300, 600, 300],
+        [500, 500],
+        [200, 700, 400],
+      ]
+      return {
+        type: 'DISTRESS',
+        difficulty: 'HARD',
+        text: 'DISTRESS',
+        distressPattern: pickRandom(patterns),
+      }
+    },
+  },
+  // ELEVATOR - HARD
+  {
+    type: 'ELEVATOR',
+    difficulty: 'HARD',
+    generate() {
+      const current = pickRandom([1, 2, 3, 4, 5])
+      let target: number
+      do {
+        target = pickRandom([1, 2, 3, 4, 5])
+      } while (target === current)
+      return {
+        type: 'ELEVATOR',
+        difficulty: 'HARD',
+        text: `FLOOR ${target}`,
+        elevatorCurrent: current,
+        elevatorTarget: target,
       }
     },
   },
