@@ -165,8 +165,8 @@ const home = usePressable(() => emit('home'))
   line-height: 1;
   margin-bottom: 8px;
   text-shadow:
-    0 0 24px rgba(57, 255, 20, 0.3),
-    0 0 60px rgba(57, 255, 20, 0.12);
+    0 0 24px rgba(140, 200, 144, 0.3),
+    0 0 60px rgba(140, 200, 144, 0.12);
 }
 
 .result-best {
@@ -186,8 +186,8 @@ const home = usePressable(() => emit('home'))
   color: var(--px-green);
   letter-spacing: 3px;
   text-shadow:
-    0 0 12px rgba(57, 255, 20, 0.3),
-    0 0 30px rgba(57, 255, 20, 0.15);
+    0 0 12px rgba(140, 200, 144, 0.3),
+    0 0 30px rgba(140, 200, 144, 0.15);
   margin-top: 12px;
   animation: pulse 0.6s ease-in-out infinite;
 }
@@ -238,7 +238,7 @@ const home = usePressable(() => emit('home'))
   border-color: var(--px-green-border-hover);
   color: var(--px-green-bright);
   box-shadow:
-    0 0 12px rgba(57, 255, 20, 0.08),
+    0 0 12px rgba(140, 200, 144, 0.08),
     inset 1px 1px 0 #6a7a66,
     inset -1px -1px 0 #3a4a3a;
 }

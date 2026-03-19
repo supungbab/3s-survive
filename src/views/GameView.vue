@@ -188,7 +188,7 @@ onUnmounted(() => {
   background: #0a0610;
   background-image:
     radial-gradient(ellipse at 50% 100%, rgba(255, 80, 20, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 0%, rgba(57, 255, 20, 0.03) 0%, transparent 40%);
+    radial-gradient(ellipse at 50% 0%, rgba(140, 200, 144, 0.03) 0%, transparent 40%);
 }
 
 .scanlines {
@@ -245,8 +245,8 @@ onUnmounted(() => {
   color: var(--px-green);
   font-size: 32px;
   text-shadow:
-    0 0 12px rgba(57, 255, 20, 0.3),
-    0 0 40px rgba(57, 255, 20, 0.15);
+    0 0 12px rgba(140, 200, 144, 0.3),
+    0 0 40px rgba(140, 200, 144, 0.15);
 }
 
 .phase-badge.fail {

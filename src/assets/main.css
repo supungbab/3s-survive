@@ -47,16 +47,16 @@
   --px-neutral-frame: #0a0a0c;
 
   /* ─── Accent colors ─── */
-  --arc-green: #39ff14;
-  --arc-green-dim: #1a7a0a;
-  --arc-green-glow: rgba(57, 255, 20, 0.4);
+  --arc-green: #a0dca4;
+  --arc-green-dim: #5a7a5c;
+  --arc-green-glow: rgba(140, 200, 144, 0.4);
   --arc-amber: #ffb800;
   --arc-amber-glow: rgba(255, 184, 0, 0.3);
   --arc-cyan: #00e5ff;
 
   --arc-danger: #ff3b5c;
   --arc-danger-glow: rgba(255, 59, 92, 0.4);
-  --arc-success: #39ff14;
+  --arc-success: #a0dca4;
   --arc-warning: #ffab00;
 
   /* Game mission colors */
@@ -70,7 +70,7 @@
 body {
   background: var(--arc-bg);
   background-image:
-    radial-gradient(ellipse at 50% 0%, rgba(57, 255, 20, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 0%, rgba(140, 200, 144, 0.06) 0%, transparent 60%),
     radial-gradient(ellipse at 50% 100%, rgba(255, 184, 0, 0.04) 0%, transparent 50%);
   color: var(--arc-text);
   font-family: 'Galmuri11', monospace;

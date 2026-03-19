@@ -39,7 +39,7 @@ defineProps<{
     0 0 0 2px #111311,
     inset 1px 1px 0 #5a6858,
     inset -1px -1px 0 #2a322a,
-    0 0 12px rgba(57, 255, 20, 0.08);
+    0 0 12px rgba(140, 200, 144, 0.08);
 }
 
 .press-circle.pressing {

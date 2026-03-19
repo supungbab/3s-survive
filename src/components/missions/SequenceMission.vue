@@ -75,7 +75,7 @@ function getIcon(step: SequenceStep): string {
   opacity: 0.5;
   box-shadow:
     0 0 0 2px #111311,
-    0 0 8px rgba(57, 255, 20, 0.1),
+    0 0 8px rgba(140, 200, 144, 0.1),
     inset 1px 1px 0 #3a4a38;
 }
 

@@ -38,7 +38,7 @@ const ARROWS: Record<SwipeDirection, string> = {
   color: var(--arc-green);
   text-shadow:
     0 0 20px var(--arc-green-glow),
-    0 0 60px rgba(57, 255, 20, 0.15);
+    0 0 60px rgba(140, 200, 144, 0.15);
 }
 
 .arrow-display.reverse {

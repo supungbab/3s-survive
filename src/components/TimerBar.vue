@@ -40,7 +40,7 @@ defineProps<{
 .timer-bar-fill.active {
   box-shadow:
     0 0 8px var(--arc-green-glow),
-    0 0 20px rgba(57, 255, 20, 0.15);
+    0 0 20px rgba(140, 200, 144, 0.15);
 }
 
 .timer-bar-fill.urgent {

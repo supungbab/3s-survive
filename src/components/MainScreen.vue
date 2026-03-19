@@ -747,7 +747,7 @@ onMounted(async () => {
     inset 1px 1px 0 #5a6858,
     inset -1px -1px 0 #2a322a,
     /* subtle glow */
-    inset 0 0 20px rgba(57, 255, 20, 0.03);
+    inset 0 0 20px rgba(140, 200, 144, 0.03);
   image-rendering: pixelated;
 }
 
@@ -756,10 +756,10 @@ onMounted(async () => {
   border-color: var(--px-green-border-hover);
   box-shadow:
     0 0 0 3px #111311,
-    0 0 16px rgba(57, 255, 20, 0.1),
+    0 0 16px rgba(140, 200, 144, 0.1),
     inset 1px 1px 0 #6a7a66,
     inset -1px -1px 0 #3a4a3a,
-    inset 0 0 24px rgba(57, 255, 20, 0.06);
+    inset 0 0 24px rgba(140, 200, 144, 0.06);
   color: var(--px-green-bright);
 }
 
@@ -784,15 +784,15 @@ onMounted(async () => {
       0 0 0 3px #111311,
       inset 1px 1px 0 #5a6858,
       inset -1px -1px 0 #2a322a,
-      inset 0 0 20px rgba(57, 255, 20, 0.03);
+      inset 0 0 20px rgba(140, 200, 144, 0.03);
   }
   50% {
     box-shadow:
       0 0 0 3px #111311,
-      0 0 10px rgba(57, 255, 20, 0.08),
+      0 0 10px rgba(140, 200, 144, 0.08),
       inset 1px 1px 0 #5a6858,
       inset -1px -1px 0 #2a322a,
-      inset 0 0 24px rgba(57, 255, 20, 0.06);
+      inset 0 0 24px rgba(140, 200, 144, 0.06);
   }
 }
 

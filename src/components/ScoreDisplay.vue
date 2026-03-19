@@ -42,7 +42,7 @@ watch(() => props.score, () => {
   text-align: right;
   line-height: 1;
   text-shadow:
-    0 0 16px rgba(57, 255, 20, 0.3),
-    0 0 48px rgba(57, 255, 20, 0.1);
+    0 0 16px rgba(140, 200, 144, 0.3),
+    0 0 48px rgba(140, 200, 144, 0.1);
 }
 </style>

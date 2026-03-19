@@ -20,6 +20,6 @@ defineProps<{
   padding: 16px;
   text-shadow:
     0 0 20px var(--arc-green-glow),
-    0 0 60px rgba(57, 255, 20, 0.12);
+    0 0 60px rgba(140, 200, 144, 0.12);
 }
 </style>
