@@ -1,13 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <defs>
     <radialGradient id="bg" cx="50%" cy="40%" r="65%">
-      <stop offset="0%" stop-color="#0f1520"/>
-      <stop offset="100%" stop-color="#060a12"/>
+      <stop offset="0%" stop-color="#120a18"/>
+      <stop offset="100%" stop-color="#0a0610"/>
     </radialGradient>
     <filter id="g">
-      <feGaussianBlur stdDeviation="3.5" result="b"/>
+      <feGaussianBlur stdDeviation="3" result="b"/>
       <feMerge>
-        <feMergeNode in="b"/>
         <feMergeNode in="b"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
@@ -16,8 +15,13 @@
 
   <rect width="128" height="128" rx="22" fill="url(#bg)"/>
 
+  <!-- Scanline hint -->
+  <line x1="0" y1="46" x2="128" y2="46" stroke="#000" stroke-opacity="0.18" stroke-width="2"/>
+  <line x1="0" y1="70" x2="128" y2="70" stroke="#000" stroke-opacity="0.18" stroke-width="2"/>
+  <line x1="0" y1="94" x2="128" y2="94" stroke="#000" stroke-opacity="0.12" stroke-width="2"/>
+
   <!-- Pixel "3" — 5col x 7row, cell=12px, centered -->
-  <g filter="url(#g)" fill="#39ff14">
+  <g filter="url(#g)" fill="#a0dca4">
     <!-- Row 0: .XXX. -->
     <rect x="46" y="22" width="12" height="12"/>
     <rect x="58" y="22" width="12" height="12"/>
