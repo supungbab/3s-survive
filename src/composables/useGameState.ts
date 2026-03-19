@@ -31,10 +31,12 @@ export function useGameState() {
   const audio = useAudio()
   const feedback = useFeedback()
 
-  // Color tap needs special validation from the component
+  // Color tap / component-validated missions
   let colorTapCorrect = false
   let multiTapCount = 0
+  const doubleSwipeCount = ref(0)
   const sequenceIndex = ref(0)
+  let simonReady = false
 
   // Track pending timeouts to prevent ghost timers on restart
   const pendingTimers: number[] = []
@@ -58,7 +60,9 @@ export function useGameState() {
   function resetSubMissionState() {
     colorTapCorrect = false
     multiTapCount = 0
+    doubleSwipeCount.value = 0
     sequenceIndex.value = 0
+    simonReady = false
   }
 
   function startGame() {
@@ -149,6 +153,92 @@ export function useGameState() {
       return
     }
 
+    // Component-validated single-tap missions
+    if (
+      (m.type === 'TAP_ZONE' || m.type === 'SIZE_TAP' || m.type === 'ODD_ONE_OUT'
+        || m.type === 'MATH_TAP' || m.type === 'QUICK_TAP' || m.type === 'WIRE_CUT')
+      && action.type === 'TAP'
+    ) {
+      if (colorTapCorrect) {
+        handleSuccess()
+      } else {
+        handleFail()
+      }
+      return
+    }
+
+    // Component-managed missions: only component emit succeeds, raw input ignored
+    // These use stopPropagation internally; raw events reach here only from outside the component area
+    if (
+      m.type === 'CATCH' || m.type === 'DRAG_TO' || m.type === 'PINCH'
+      || m.type === 'ROTATE' || m.type === 'HOLD_AND_TAP'
+      || m.type === 'DUAL_SWIPE' || m.type === 'RHYTHM'
+      || m.type === 'TUNE' || m.type === 'POWER_UP' || m.type === 'STATIC_CLEAR'
+      || m.type === 'BROADCAST' || m.type === 'SCAN' || m.type === 'SHELTER'
+      || m.type === 'MORSE'
+    ) {
+      if (action.type === 'TAP' && colorTapCorrect) {
+        handleSuccess()
+      }
+      // all other raw inputs → ignore (timeout handles fail)
+      return
+    }
+
+    // COUNT_TAP: exact tap count, over-tap = fail
+    if (m.type === 'COUNT_TAP') {
+      if (action.type === 'TAP') {
+        multiTapCount++
+        if (multiTapCount === (m.tapCount ?? 3)) {
+          handleSuccess()
+        } else if (multiTapCount > (m.tapCount ?? 3)) {
+          handleFail()
+        }
+      }
+      return
+    }
+
+    // PATTERN_TAP: step-by-step via component emit
+    if (m.type === 'PATTERN_TAP' && action.type === 'TAP') {
+      if (colorTapCorrect) {
+        sequenceIndex.value++
+        if (sequenceIndex.value >= (m.patternLength ?? 3)) {
+          handleSuccess()
+        }
+      } else {
+        handleFail()
+      }
+      return
+    }
+
+    // SIMON: step-by-step via component emit, guarded by playback state
+    if (m.type === 'SIMON' && action.type === 'TAP') {
+      if (!simonReady) return // 재생 중 → 무시
+      if (colorTapCorrect) {
+        sequenceIndex.value++
+        if (sequenceIndex.value >= (m.simonSequence?.length ?? 2)) {
+          handleSuccess()
+        }
+      } else {
+        handleFail()
+      }
+      return
+    }
+
+    // DOUBLE_SWIPE: count swipes, wrong direction = fail
+    if (m.type === 'DOUBLE_SWIPE') {
+      if (action.type === 'SWIPE') {
+        if (action.direction === m.swipeDirection) {
+          doubleSwipeCount.value++
+          if (doubleSwipeCount.value >= (m.swipeCount ?? 2)) {
+            handleSuccess()
+          }
+        } else {
+          handleFail()
+        }
+      }
+      return
+    }
+
     // MULTI_TAP: count taps internally and succeed immediately when target reached
     if (m.type === 'MULTI_TAP' && (action.type === 'TAP' || action.type === 'MULTI_TAP')) {
       if (action.type === 'TAP') {
@@ -188,6 +278,10 @@ export function useGameState() {
 
   function setColorTapResult(correct: boolean) {
     colorTapCorrect = correct
+  }
+
+  function setSimonReady() {
+    simonReady = true
   }
 
   function handleSuccess() {
@@ -241,7 +335,9 @@ export function useGameState() {
     startGame,
     handleInput,
     setColorTapResult,
+    setSimonReady,
     sequenceIndex,
+    doubleSwipeCount,
     restart,
     clearAllTimers,
   }

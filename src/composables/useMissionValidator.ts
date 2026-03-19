@@ -36,6 +36,98 @@ export function useMissionValidator() {
       case 'SEQUENCE':
         return false // handled directly in useGameState
 
+      case 'TAP_ZONE':
+        return action.type === 'TAP' // validation in component via emit
+
+      case 'SIZE_TAP':
+        return action.type === 'TAP' // validation in component via emit
+
+      case 'SWIPE_MATCH':
+        return (
+          action.type === 'SWIPE' && action.direction === mission.swipeDirection
+        )
+
+      case 'DOUBLE_SWIPE':
+        return false // handled directly in useGameState (swipe counting)
+
+      case 'ODD_ONE_OUT':
+        return action.type === 'TAP' // validation in component via emit
+
+      case 'MATH_TAP':
+        return action.type === 'TAP' // validation in component via emit
+
+      case 'MIRROR_SWIPE':
+        return (
+          action.type === 'SWIPE' && action.direction === mission.swipeDirection
+        )
+
+      case 'QUICK_TAP':
+        return action.type === 'TAP' // validation in component via emit
+
+      case 'CATCH':
+        return false // handled in component (only target tap succeeds), ignore raw taps
+
+      case 'COUNT_TAP':
+        return false // handled directly in useGameState (exact tap counting)
+
+      case 'PATTERN_TAP':
+        return false // handled directly in useGameState (step tracking)
+
+      case 'SIMON':
+        return false // handled directly in useGameState (step tracking + playback guard)
+
+      case 'FAKE_OUT':
+        return (
+          action.type === 'SWIPE' && action.direction === mission.swipeDirection
+        )
+
+      case 'DRAG_TO':
+        return false // handled entirely in component (stopPropagation)
+
+      case 'PINCH':
+        return false // handled entirely in component (multi-touch, stopPropagation)
+
+      case 'ROTATE':
+        return false // handled entirely in component (multi-touch, stopPropagation)
+
+      case 'COLOR_SWIPE':
+        return (
+          action.type === 'SWIPE' && action.direction === mission.swipeDirection
+        )
+
+      case 'HOLD_AND_TAP':
+        return false // handled entirely in component (multi-touch, stopPropagation)
+
+      case 'DUAL_SWIPE':
+        return false // handled entirely in component (multi-touch, stopPropagation)
+
+      case 'RHYTHM':
+        return false // handled entirely in component (timing, stopPropagation)
+
+      case 'TUNE':
+        return false // handled entirely in component (continuous drag, stopPropagation)
+
+      case 'POWER_UP':
+        return false // handled entirely in component (alternating swipes, stopPropagation)
+
+      case 'WIRE_CUT':
+        return action.type === 'TAP' // validation in component via emit
+
+      case 'STATIC_CLEAR':
+        return false // handled entirely in component (touch distance, stopPropagation)
+
+      case 'BROADCAST':
+        return false // handled entirely in component (release timing, stopPropagation)
+
+      case 'SCAN':
+        return false // handled in component (blip taps via pointerdown)
+
+      case 'SHELTER':
+        return false // handled entirely in component (spatial tap, stopPropagation)
+
+      case 'MORSE':
+        return false // handled entirely in component (tap duration, stopPropagation)
+
       default:
         return false
     }

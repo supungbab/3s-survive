@@ -10,16 +10,16 @@ interface DifficultyBracket {
 const DIFFICULTY_ORDER: Record<Difficulty, number> = { EASY: 0, NORMAL: 1, HARD: 2 }
 
 const BRACKETS: DifficultyBracket[] = [
-  { maxScore: 5, missionTypes: ['COLOR_TAP', 'SWIPE', 'MULTI_TAP'], maxDifficulty: 'EASY' },
-  { maxScore: 15, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP'], maxDifficulty: 'NORMAL' },
-  { maxScore: 30, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'LONG_PRESS', 'COLOR_TAP_NEGATIVE'], maxDifficulty: 'NORMAL' },
-  { maxScore: Infinity, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'LONG_PRESS', 'DUAL_TAP', 'DO_NOTHING', 'SEQUENCE', 'COLOR_TAP_NEGATIVE'], maxDifficulty: 'HARD' },
+  { maxScore: 5, missionTypes: ['COLOR_TAP', 'SWIPE', 'MULTI_TAP', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'QUICK_TAP', 'CATCH', 'DRAG_TO', 'STATIC_CLEAR', 'SCAN'], maxDifficulty: 'EASY' },
+  { maxScore: 15, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'ODD_ONE_OUT', 'QUICK_TAP', 'CATCH', 'COUNT_TAP', 'PATTERN_TAP', 'DRAG_TO', 'PINCH', 'ROTATE', 'COLOR_SWIPE', 'TUNE', 'POWER_UP', 'SHELTER', 'STATIC_CLEAR', 'SCAN'], maxDifficulty: 'NORMAL' },
+  { maxScore: 30, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'LONG_PRESS', 'COLOR_TAP_NEGATIVE', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'ODD_ONE_OUT', 'QUICK_TAP', 'CATCH', 'COUNT_TAP', 'PATTERN_TAP', 'DRAG_TO', 'PINCH', 'ROTATE', 'COLOR_SWIPE', 'HOLD_AND_TAP', 'TUNE', 'POWER_UP', 'SHELTER', 'STATIC_CLEAR', 'SCAN'], maxDifficulty: 'NORMAL' },
+  { maxScore: Infinity, missionTypes: ['COLOR_TAP', 'SWIPE', 'REVERSE_SWIPE', 'MULTI_TAP', 'LONG_PRESS', 'DUAL_TAP', 'DO_NOTHING', 'SEQUENCE', 'COLOR_TAP_NEGATIVE', 'TAP_ZONE', 'SIZE_TAP', 'SWIPE_MATCH', 'DOUBLE_SWIPE', 'ODD_ONE_OUT', 'MATH_TAP', 'MIRROR_SWIPE', 'QUICK_TAP', 'CATCH', 'COUNT_TAP', 'PATTERN_TAP', 'SIMON', 'FAKE_OUT', 'DRAG_TO', 'PINCH', 'ROTATE', 'COLOR_SWIPE', 'HOLD_AND_TAP', 'DUAL_SWIPE', 'RHYTHM', 'TUNE', 'POWER_UP', 'WIRE_CUT', 'STATIC_CLEAR', 'BROADCAST', 'SCAN', 'SHELTER', 'MORSE'], maxDifficulty: 'HARD' },
 ]
 
 /** 다중 미션 시 제외할 타입 */
-const MULTI_MISSION_EXCLUDE: MissionType[] = ['DO_NOTHING', 'LONG_PRESS']
+const MULTI_MISSION_EXCLUDE: MissionType[] = ['DO_NOTHING', 'LONG_PRESS', 'DOUBLE_SWIPE', 'SIMON', 'CATCH', 'RHYTHM', 'HOLD_AND_TAP', 'BROADCAST', 'MORSE', 'POWER_UP']
 /** 3개 이상 미션 시 추가 제외 */
-const TRIPLE_MISSION_EXCLUDE: MissionType[] = ['SEQUENCE']
+const TRIPLE_MISSION_EXCLUDE: MissionType[] = ['SEQUENCE', 'MIRROR_SWIPE', 'PATTERN_TAP', 'COUNT_TAP', 'PINCH', 'ROTATE', 'TUNE', 'WIRE_CUT', 'STATIC_CLEAR', 'SHELTER']
 
 export function getMissionCount(score: number): number {
   if (score <= 5) return 1

@@ -16,6 +16,32 @@ import LongPressMission from '@/components/missions/LongPressMission.vue'
 import DualTapMission from '@/components/missions/DualTapMission.vue'
 import DoNothingMission from '@/components/missions/DoNothingMission.vue'
 import SequenceMission from '@/components/missions/SequenceMission.vue'
+import TapZoneMission from '@/components/missions/TapZoneMission.vue'
+import SizeTapMission from '@/components/missions/SizeTapMission.vue'
+import DoubleSwipeMission from '@/components/missions/DoubleSwipeMission.vue'
+import OddOneOutMission from '@/components/missions/OddOneOutMission.vue'
+import MathTapMission from '@/components/missions/MathTapMission.vue'
+import QuickTapMission from '@/components/missions/QuickTapMission.vue'
+import CatchMission from '@/components/missions/CatchMission.vue'
+import CountTapMission from '@/components/missions/CountTapMission.vue'
+import PatternTapMission from '@/components/missions/PatternTapMission.vue'
+import SimonMission from '@/components/missions/SimonMission.vue'
+import FakeOutMission from '@/components/missions/FakeOutMission.vue'
+import DragToMission from '@/components/missions/DragToMission.vue'
+import PinchMission from '@/components/missions/PinchMission.vue'
+import RotateMission from '@/components/missions/RotateMission.vue'
+import ColorSwipeMission from '@/components/missions/ColorSwipeMission.vue'
+import HoldAndTapMission from '@/components/missions/HoldAndTapMission.vue'
+import DualSwipeMission from '@/components/missions/DualSwipeMission.vue'
+import RhythmMission from '@/components/missions/RhythmMission.vue'
+import TuneMission from '@/components/missions/TuneMission.vue'
+import PowerUpMission from '@/components/missions/PowerUpMission.vue'
+import WireCutMission from '@/components/missions/WireCutMission.vue'
+import StaticClearMission from '@/components/missions/StaticClearMission.vue'
+import BroadcastMission from '@/components/missions/BroadcastMission.vue'
+import ScanMission from '@/components/missions/ScanMission.vue'
+import ShelterMission from '@/components/missions/ShelterMission.vue'
+import MorseMission from '@/components/missions/MorseMission.vue'
 
 const router = useRouter()
 const { transition, afterTransition } = useSceneTransition()
@@ -34,7 +60,9 @@ const {
   startGame,
   handleInput,
   setColorTapResult,
+  setSimonReady,
   sequenceIndex,
+  doubleSwipeCount,
   restart,
   clearAllTimers,
 } = useGameState()
@@ -152,6 +180,148 @@ onUnmounted(() => {
             v-else-if="mission.type === 'SEQUENCE'"
             :steps="mission.sequence!"
             :current-step="sequenceIndex"
+          />
+          <TapZoneMission
+            v-else-if="mission.type === 'TAP_ZONE'"
+            :target-zone="mission.targetZone!"
+            @tap="handleColorTap"
+          />
+          <SizeTapMission
+            v-else-if="mission.type === 'SIZE_TAP'"
+            :target-size="mission.targetSize!"
+            :sizes="mission.sizes!"
+            @tap="handleColorTap"
+          />
+          <SwipeMission
+            v-else-if="mission.type === 'SWIPE_MATCH'"
+            :direction="mission.swipeDirection!"
+            icon-only
+          />
+          <DoubleSwipeMission
+            v-else-if="mission.type === 'DOUBLE_SWIPE'"
+            :direction="mission.swipeDirection!"
+            :swipe-count="mission.swipeCount!"
+            :current-swipes="doubleSwipeCount"
+          />
+          <OddOneOutMission
+            v-else-if="mission.type === 'ODD_ONE_OUT'"
+            :odd-variant="mission.oddVariant!"
+            :item-count="mission.itemCount!"
+            :odd-index="mission.oddIndex!"
+            @tap="handleColorTap"
+          />
+          <MathTapMission
+            v-else-if="mission.type === 'MATH_TAP'"
+            :math-expression="mission.mathExpression!"
+            :math-answer="mission.mathAnswer!"
+            :math-choices="mission.mathChoices!"
+            @tap="handleColorTap"
+          />
+          <SwipeMission
+            v-else-if="mission.type === 'MIRROR_SWIPE'"
+            :direction="mission.swipeDirection!"
+            mirror
+          />
+          <QuickTapMission
+            v-else-if="mission.type === 'QUICK_TAP'"
+            @tap="handleColorTap"
+          />
+          <CatchMission
+            v-else-if="mission.type === 'CATCH'"
+            @tap="handleColorTap"
+          />
+          <CountTapMission
+            v-else-if="mission.type === 'COUNT_TAP'"
+            :count-items="mission.countItems!"
+            :current-taps="tapCount"
+          />
+          <PatternTapMission
+            v-else-if="mission.type === 'PATTERN_TAP'"
+            :pattern-length="mission.patternLength!"
+            :current-step="sequenceIndex"
+            @tap="handleColorTap"
+          />
+          <SimonMission
+            v-else-if="mission.type === 'SIMON'"
+            :simon-sequence="mission.simonSequence!"
+            :simon-buttons="mission.simonButtons!"
+            :current-step="sequenceIndex"
+            @tap="handleColorTap"
+            @ready="setSimonReady"
+          />
+          <FakeOutMission
+            v-else-if="mission.type === 'FAKE_OUT'"
+            :real-direction="mission.swipeDirection!"
+            :fake-text="mission.fakeText!"
+          />
+          <DragToMission
+            v-else-if="mission.type === 'DRAG_TO'"
+            @tap="handleColorTap"
+          />
+          <PinchMission
+            v-else-if="mission.type === 'PINCH'"
+            :pinch-direction="mission.pinchDirection!"
+            @tap="handleColorTap"
+          />
+          <RotateMission
+            v-else-if="mission.type === 'ROTATE'"
+            :rotate-direction="mission.rotateDirection!"
+            @tap="handleColorTap"
+          />
+          <ColorSwipeMission
+            v-else-if="mission.type === 'COLOR_SWIPE'"
+            :target-color="mission.targetColor!"
+            :color-swipe-rule="mission.colorSwipeRule!"
+          />
+          <HoldAndTapMission
+            v-else-if="mission.type === 'HOLD_AND_TAP'"
+            @tap="handleColorTap"
+          />
+          <DualSwipeMission
+            v-else-if="mission.type === 'DUAL_SWIPE'"
+            :dual-swipe-directions="mission.dualSwipeDirections!"
+            @tap="handleColorTap"
+          />
+          <RhythmMission
+            v-else-if="mission.type === 'RHYTHM'"
+            :beat-count="mission.beatCount!"
+            :beat-interval="mission.beatInterval!"
+            @tap="handleColorTap"
+          />
+          <TuneMission
+            v-else-if="mission.type === 'TUNE'"
+            @tap="handleColorTap"
+          />
+          <PowerUpMission
+            v-else-if="mission.type === 'POWER_UP'"
+            :required-swipes="mission.requiredSwipes!"
+            @tap="handleColorTap"
+          />
+          <WireCutMission
+            v-else-if="mission.type === 'WIRE_CUT'"
+            :wire-count="mission.wireCount!"
+            @tap="handleColorTap"
+          />
+          <StaticClearMission
+            v-else-if="mission.type === 'STATIC_CLEAR'"
+            @tap="handleColorTap"
+          />
+          <BroadcastMission
+            v-else-if="mission.type === 'BROADCAST'"
+            @tap="handleColorTap"
+          />
+          <ScanMission
+            v-else-if="mission.type === 'SCAN'"
+            @tap="handleColorTap"
+          />
+          <ShelterMission
+            v-else-if="mission.type === 'SHELTER'"
+            @tap="handleColorTap"
+          />
+          <MorseMission
+            v-else-if="mission.type === 'MORSE'"
+            :morse-pattern="mission.morsePattern!"
+            @tap="handleColorTap"
           />
         </div>
       </template>
