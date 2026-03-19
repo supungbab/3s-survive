@@ -41,7 +41,8 @@ const {
 const isBlocked = () =>
   phase.value === 'GAME_OVER' ||
   phase.value === 'IDLE' ||
-  phase.value === 'FAIL'
+  phase.value === 'FAIL' ||
+  phase.value === 'SHOWING'
 
 const { tapCount, isPressed, bind, resetTapCount } = useInputDetector((action) => {
   handleInput(action)

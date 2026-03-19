@@ -27,6 +27,7 @@ export function useGameState() {
 
   // Color tap needs special validation from the component
   let colorTapCorrect = false
+  let multiTapCount = 0
   const sequenceIndex = ref(0)
 
   // Track pending timeouts to prevent ghost timers on restart
@@ -62,6 +63,7 @@ export function useGameState() {
     mission.value = m
     missionKey.value++
     colorTapCorrect = false
+    multiTapCount = 0
     sequenceIndex.value = 0
     phase.value = 'SHOWING'
 
@@ -115,13 +117,12 @@ export function useGameState() {
       return
     }
 
-    // MULTI_TAP: individual taps are counted but don't resolve yet
-    if (m.type === 'MULTI_TAP' && action.type === 'TAP') {
-      return // let taps accumulate
-    }
-
-    if (m.type === 'MULTI_TAP' && action.type === 'MULTI_TAP') {
-      if (action.count >= (m.tapCount ?? 5)) {
+    // MULTI_TAP: count taps internally and succeed immediately when target reached
+    if (m.type === 'MULTI_TAP' && (action.type === 'TAP' || action.type === 'MULTI_TAP')) {
+      if (action.type === 'TAP') {
+        multiTapCount++
+      }
+      if (multiTapCount >= (m.tapCount ?? 5)) {
         handleSuccess()
       }
       return
