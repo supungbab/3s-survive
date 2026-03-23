@@ -1,7 +1,6 @@
 export type GamePhase =
   | 'IDLE'
   | 'SHOWING'
-  | 'SUB_SHOWING'
   | 'ACTING'
   | 'SUCCESS'
   | 'FAIL'
