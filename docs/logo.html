@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Logo</title>
+  <style>
+    * { margin: 0; padding: 0; }
+    body { width: 600px; height: 600px; }
+  </style>
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="600" height="600">
+    <defs>
+      <radialGradient id="bg" cx="50%" cy="40%" r="65%">
+        <stop offset="0%" stop-color="#120a18"/>
+        <stop offset="100%" stop-color="#0a0610"/>
+      </radialGradient>
+      <filter id="g">
+        <feGaussianBlur stdDeviation="3" result="b"/>
+        <feMerge>
+          <feMergeNode in="b"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    <rect width="128" height="128" fill="url(#bg)"/>
+    <line x1="0" y1="46" x2="128" y2="46" stroke="#000" stroke-opacity="0.18" stroke-width="2"/>
+    <line x1="0" y1="70" x2="128" y2="70" stroke="#000" stroke-opacity="0.18" stroke-width="2"/>
+    <line x1="0" y1="94" x2="128" y2="94" stroke="#000" stroke-opacity="0.12" stroke-width="2"/>
+    <g filter="url(#g)" fill="#a0dca4">
+      <rect x="46" y="22" width="12" height="12"/>
+      <rect x="58" y="22" width="12" height="12"/>
+      <rect x="70" y="22" width="12" height="12"/>
+      <rect x="34" y="34" width="12" height="12"/>
+      <rect x="82" y="34" width="12" height="12"/>
+      <rect x="82" y="46" width="12" height="12"/>
+      <rect x="58" y="58" width="12" height="12"/>
+      <rect x="70" y="58" width="12" height="12"/>
+      <rect x="82" y="70" width="12" height="12"/>
+      <rect x="34" y="82" width="12" height="12"/>
+      <rect x="82" y="82" width="12" height="12"/>
+      <rect x="46" y="94" width="12" height="12"/>
+      <rect x="58" y="94" width="12" height="12"/>
+      <rect x="70" y="94" width="12" height="12"/>
+    </g>
+  </svg>
+</body>
+</html>

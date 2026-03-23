@@ -47,7 +47,7 @@ export function useGameState() {
     pendingTimers.length = 0
   }
 
-  function resetSubMissionState() {
+  function resetMissionState() {
     colorTapCorrect = false
   }
 
@@ -64,7 +64,7 @@ export function useGameState() {
     const m = pool.pickMission(score.value)
     mission.value = m
     missionKey.value++
-    resetSubMissionState()
+    resetMissionState()
     phase.value = 'SHOWING'
 
     // After showing delay, enable input
