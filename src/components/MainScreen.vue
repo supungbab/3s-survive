@@ -12,6 +12,7 @@ defineProps<{
 
 const emit = defineEmits<{
   start: []
+  'replay-intro': []
 }>()
 
 const start = usePressable(() => {
@@ -82,6 +83,13 @@ function onBgmVolumeInput(e: Event) {
 function testSound(e: Event) {
   e.stopPropagation()
   playTick()
+}
+
+function replayIntro(e: Event) {
+  e.stopPropagation()
+  playTick()
+  bgm.stop()
+  emit('replay-intro')
 }
 
 async function tryStartBgm() {
@@ -217,6 +225,11 @@ onMounted(async () => {
       </div>
 
       <div v-else class="first-play">{{ t('첫 도전을 시작하세요!') }}</div>
+
+      <!-- Operator log replay -->
+      <button class="log-replay" @click="replayIntro">
+        [ ▶ {{ t('오퍼레이터 기록') }} ]
+      </button>
     </div>
 
     <!-- Ranking toast -->
@@ -964,6 +977,24 @@ onMounted(async () => {
   font-size: 14px;
   color: var(--arc-muted);
   opacity: 0.7;
+}
+
+/* ─── Log replay ─── */
+.log-replay {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  font-family: 'Mulmaru', monospace;
+  font-size: 12px;
+  color: var(--px-green-dim);
+  cursor: pointer;
+  padding: 4px 8px;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+.log-replay:hover,
+.log-replay:active {
+  color: var(--px-green);
 }
 
 /* ─── Toast ─── */

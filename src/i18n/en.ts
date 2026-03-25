@@ -1,4 +1,23 @@
 const en: Record<string, string> = {
+  // ====== IntroScene ======
+  '수신 메시지 1건': '1 MESSAGE RECEIVED',
+  '이전 오퍼레이터의 기록이 남아 있습니다.': 'A previous operator\'s log remains.',
+  '"3초. 그게 전부야.': '"3 seconds. That\'s all you get.',
+  ' 화면에 뜨면 바로 해. 생각하지 마.': ' When it shows up, just do it. Don\'t think.',
+  ' 네가 늦으면 누군가 죽어.': ' If you\'re late, someone dies.',
+  ' ...나처럼 되지 마."': ' ...Don\'t end up like me."',
+  '— 기록 종료 —': '— END OF LOG —',
+  '미션 대기 중...': 'AWAITING MISSION...',
+  '시스템 부팅': 'SYSTEM BOOT',
+  '신호 상태': 'SIGNAL STATUS',
+  '유실': 'LOST',
+  '거점 #17': 'OUTPOST #17',
+  '접속': 'ONLINE',
+  '오퍼레이터 단말': 'OPERATOR TERMINAL',
+  '활성': 'ACTIVE',
+  '화면을 터치하여 시작': 'TAP TO START',
+  '오퍼레이터 기록': 'OPERATOR LOG',
+
   // ====== MainScreen ======
   '초': 'SEC',
   '생존': 'SURVIVE',
