@@ -16,6 +16,7 @@ const en: Record<string, string> = {
   '오퍼레이터 단말': 'OPERATOR TERMINAL',
   '활성': 'ACTIVE',
   '화면을 터치하여 시작': 'TAP TO START',
+  '1건': '1 MESSAGE',
   '오퍼레이터 기록': 'OPERATOR LOG',
 
   // ====== MainScreen ======

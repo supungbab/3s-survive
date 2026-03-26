@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from '@/composables/useI18n'
-import { getAudioContext } from '@/composables/audioContext'
+import { getAudioContext, ensureAudioReady } from '@/composables/audioContext'
 import { useSettings } from '@/composables/useSettings'
 
 const emit = defineEmits<{ done: [] }>()
 const { t } = useI18n()
 const { soundEnabled, volume } = useSettings()
 
+const waiting = ref(true)  // 사용자 제스처 대기
 const lines = ref<{ text: string; class?: string }[]>([])
 const showMessage = ref(false)
 const messageLines = ref<string[]>([])
 const showCursor = ref(true)
 const phase = ref<'boot' | 'message' | 'fade'>('boot')
 
-function playKeySound() {
+/** CRT 비프 — 낮은 단음 "띠" */
+function beep() {
   if (!soundEnabled.value) return
   try {
     const ctx = getAudioContext()
@@ -22,13 +24,13 @@ function playKeySound() {
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
     osc.type = 'square'
-    osc.frequency.value = 800 + Math.random() * 400
-    gain.gain.value = 0.06 * volume.value
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03)
+    osc.frequency.value = 440
+    gain.gain.value = 0.09 * volume.value
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06)
     osc.connect(gain)
     gain.connect(ctx.destination)
     osc.start()
-    osc.stop(ctx.currentTime + 0.03)
+    osc.stop(ctx.currentTime + 0.06)
     osc.onended = () => { osc.disconnect(); gain.disconnect() }
   } catch { /* ignore */ }
 }
@@ -37,52 +39,36 @@ function sleep(ms: number) {
   return new Promise<void>(r => setTimeout(r, ms))
 }
 
-async function typeLine(text: string, cls?: string, charDelay = 18) {
-  lines.value.push({ text: '', class: cls })
-  const idx = lines.value.length - 1
-  for (const ch of text) {
-    lines.value[idx] = { ...lines.value[idx], text: lines.value[idx].text + ch }
-    if (ch !== ' ') playKeySound()
-    await sleep(charDelay)
-  }
-  await sleep(80)
-}
-
 async function typeBootLine(label: string, dots: number, result: string, cls?: string) {
   lines.value.push({ text: '> ' + label, class: 'dim' })
   const idx = lines.value.length - 1
-  playKeySound()
-  await sleep(120)
+  beep(); await sleep(500)
 
   for (let i = 0; i < dots; i++) {
     lines.value[idx] = { ...lines.value[idx], text: lines.value[idx].text + '.' }
-    playKeySound()
-    await sleep(80 + Math.random() * 60)
+    beep(); await sleep(80)
   }
 
-  await sleep(300 + Math.random() * 400)
+  beep(); await sleep(500)
 
   lines.value[idx] = { text: lines.value[idx].text + result, class: cls }
-  playKeySound()
-  await sleep(150)
-}
-
-async function addLine(text: string, cls?: string) {
-  lines.value.push({ text, class: cls })
-  playKeySound()
-  await sleep(60)
+  beep(); await sleep(150)
 }
 
 async function runBootSequence() {
   await sleep(600)
-  await typeBootLine(t('시스템 부팅'), 22, 'OK', 'dim')
+
+  // 부팅 라인 — 결과 나올 때마다 "띠"
+  await typeBootLine(t('시스템 부팅'), 20, 'OK', 'dim')
+  await sleep(500)
   await typeBootLine(t('신호 상태'), 20, t('유실'), 'danger')
-  await typeBootLine(t('거점 #17'), 22, t('접속'), 'dim')
-  await typeBootLine(t('오퍼레이터 단말'), 16, t('활성'), 'green')
-  await sleep(400)
-  await addLine('')
-  await typeLine('> ██ ' + t('수신 메시지 1건') + ' ██', 'highlight')
-  await sleep(600)
+  await sleep(500)
+  await typeBootLine(t('거점 #17'), 20, t('접속'), 'dim')
+  await sleep(500)
+  await typeBootLine(t('오퍼레이터 단말'), 20, t('활성'), 'green')
+  await sleep(500)
+  await typeBootLine(t('수신 메시지'), 20, t('1건'), 'highlight')
+  await sleep(500)
 
   // transition to message phase
   phase.value = 'message'
@@ -101,18 +87,11 @@ async function runBootSequence() {
 
   for (const line of msg) {
     messageLines.value.push(line)
-    if (line && !line.startsWith('—')) playKeySound()
-    await sleep(line === '' ? 200 : 350)
+    beep(); await sleep(line === '' ? 200 : 350)
   }
 
   await sleep(800)
   showCursor.value = false
-  await sleep(300)
-
-  // show final boot line
-  await addLine('')
-  await typeLine('> ' + t('미션 대기 중...'), 'green')
-  await sleep(500)
 }
 
 async function finish() {
@@ -122,9 +101,11 @@ async function finish() {
   emit('done')
 }
 
-onMounted(async () => {
+async function startIntro() {
+  waiting.value = false
+  await ensureAudioReady()
   await runBootSequence()
-})
+}
 
 function msgLineClass(line: string) {
   const isQuote = line.startsWith('"') || line.startsWith('\u201C') || line.startsWith(' ')
@@ -136,7 +117,8 @@ function msgLineClass(line: string) {
 }
 
 function handleTap() {
-  if (phase.value === 'boot') return // don't skip boot
+  if (waiting.value) { startIntro(); return }
+  if (phase.value === 'boot') return
   if (phase.value === 'fade') return
   finish()
 }
@@ -154,7 +136,13 @@ function handleTap() {
     <div class="crt-flicker" />
     <div class="scanlines" />
 
-    <div class="intro-terminal">
+    <!-- 제스처 대기 화면 -->
+    <div v-if="waiting" class="waiting-screen">
+      <div class="waiting-cursor">█</div>
+      <div class="tap-hint pulse">{{ t('화면을 터치하여 시작') }}</div>
+    </div>
+
+    <div v-else class="intro-terminal">
       <!-- Boot lines -->
       <div class="boot-lines">
         <div
@@ -206,6 +194,21 @@ function handleTap() {
 
 .intro-screen.fade-out {
   opacity: 0;
+}
+
+/* 제스처 대기 화면 */
+.waiting-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  z-index: 20;
+}
+.waiting-cursor {
+  color: var(--px-green, #8cc890);
+  font-family: 'Mulmaru', monospace;
+  font-size: 24px;
+  animation: blink 0.8s step-end infinite;
 }
 
 /* CRT effects (reuse from MainScreen) */
