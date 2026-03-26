@@ -2,7 +2,6 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useAudio } from '@/composables/useAudio'
 import { useI18n } from '@/composables/useI18n'
-import { pickRandom } from '@/utils/random'
 
 const { playTick } = useAudio()
 const { t } = useI18n()
@@ -12,13 +11,11 @@ const emit = defineEmits<{
 }>()
 
 const GRID = 4
-const SPREAD_DELAY = 1500
 
 type CellState = 'empty' | 'infected' | 'walled'
 
 const cells = ref<CellState[]>(new Array(GRID * GRID).fill('empty'))
 const infectedIndex = ref(-1)
-let spreadTimer = 0
 let resolved = false
 
 function getAdjacentIndices(idx: number): number[] {
@@ -43,7 +40,6 @@ function checkWin() {
   const allWalled = adj.every((i) => cells.value[i] === 'walled')
   if (allWalled) {
     resolved = true
-    clearTimeout(spreadTimer)
     playTick()
     emit('tap', true)
   }
@@ -59,28 +55,10 @@ function handleCellTap(index: number) {
   checkWin()
 }
 
-function spreadInfection() {
-  if (resolved) return
-  const adj = adjacentToInfected.value
-  const openCells = adj.filter((i) => cells.value[i] === 'empty')
-  if (openCells.length > 0) {
-    // Infection spreads to an open adjacent cell — fail
-    const target = pickRandom(openCells)
-    cells.value[target] = 'infected'
-    resolved = true
-    emit('tap', false)
-  }
-}
-
 onMounted(() => {
   const idx = Math.floor(Math.random() * GRID * GRID)
   infectedIndex.value = idx
   cells.value[idx] = 'infected'
-  spreadTimer = window.setTimeout(spreadInfection, SPREAD_DELAY)
-})
-
-onUnmounted(() => {
-  clearTimeout(spreadTimer)
 })
 </script>
 

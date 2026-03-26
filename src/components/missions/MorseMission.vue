@@ -25,24 +25,18 @@ const inputStates = ref<('waiting' | 'correct' | 'wrong')[]>([])
 let pressStart = 0
 let resolved = false
 const isPressed = ref(false)
+const isDot = ref(false)
+const isDash = ref(false)
+let dashCheckRaf = 0
 
-function onStart(e: TouchEvent | MouseEvent) {
-  e.stopPropagation()
-  if (e.cancelable) e.preventDefault()
+const DOT_THRESHOLD = 150 // inner square fills at this point
+
+function submitInput(input: MorseChar) {
   if (resolved) return
-  pressStart = performance.now()
-  isPressed.value = true
-}
-
-function onEnd(e: TouchEvent | MouseEvent) {
-  e.stopPropagation()
-  if (e.cancelable) e.preventDefault()
-  if (resolved || pressStart === 0) return
-  isPressed.value = false
-
-  const duration = performance.now() - pressStart
-  const input: MorseChar = duration >= LONG_THRESHOLD ? 'DASH' : 'DOT'
   const expected = pattern.value[currentStep.value]
+
+  isPressed.value = false
+  pressStart = 0
 
   if (input === expected) {
     inputStates.value[currentStep.value] = 'correct'
@@ -57,7 +51,54 @@ function onEnd(e: TouchEvent | MouseEvent) {
     resolved = true
     emit('tap', false)
   }
-  pressStart = 0
+}
+
+function startFillCheck() {
+  isDot.value = false
+  isDash.value = false
+  function check() {
+    if (!isPressed.value || resolved) return
+    const elapsed = performance.now() - pressStart
+    if (elapsed >= LONG_THRESHOLD) {
+      isDot.value = true
+      isDash.value = true
+      stopFillCheck()
+      submitInput('DASH')
+      return
+    }
+    if (elapsed >= DOT_THRESHOLD) {
+      isDot.value = true
+    }
+    dashCheckRaf = requestAnimationFrame(check)
+  }
+  dashCheckRaf = requestAnimationFrame(check)
+}
+
+function stopFillCheck() {
+  if (dashCheckRaf) {
+    cancelAnimationFrame(dashCheckRaf)
+    dashCheckRaf = 0
+  }
+  isDot.value = false
+  isDash.value = false
+}
+
+function onStart(e: TouchEvent | MouseEvent) {
+  e.stopPropagation()
+  if (e.cancelable) e.preventDefault()
+  if (resolved) return
+  pressStart = performance.now()
+  isPressed.value = true
+  startFillCheck()
+}
+
+function onEnd(e: TouchEvent | MouseEvent) {
+  e.stopPropagation()
+  if (e.cancelable) e.preventDefault()
+  if (resolved || pressStart === 0) return
+  stopFillCheck()
+  // Released before DASH threshold → DOT
+  submitInput('DOT')
 }
 
 onMounted(() => {
@@ -94,11 +135,7 @@ onUnmounted(() => {
       </span>
     </div>
 
-    <div class="morse-input-area" :class="{ pressed: isPressed }">
-      <div class="morse-key">
-        {{ isPressed ? '■' : '□' }}
-      </div>
-    </div>
+    <div class="morse-btn" :class="{ pressed: isPressed, dot: isDot, dash: isDash }" />
 
     <div class="morse-hint">
       {{ t('짧게=· 길게=—') }}
@@ -153,32 +190,36 @@ onUnmounted(() => {
   opacity: 1;
 }
 
-.morse-input-area {
+.morse-btn {
   width: 80px;
   height: 80px;
-  border: 3px solid var(--px-green-border);
   background: var(--px-green-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow:
-    0 0 0 2px var(--px-green-frame),
-    inset 1px 1px 0 var(--px-green-bevel-light),
-    inset -1px -1px 0 var(--px-green-bevel-dark);
-  transition: all 0.1s;
+  border: 2px solid var(--px-green-border);
+  transition: transform 0.1s;
 }
 
-.morse-input-area.pressed {
+.morse-btn.pressed {
+  transform: scale(0.92);
+  animation: btn-fill 300ms linear forwards;
+}
+
+.morse-btn.dot {
+  animation: none;
+  background: var(--px-green-bright);
+  box-shadow: 0 0 20px var(--px-green-glow);
+}
+
+.morse-btn.dash {
+  animation: none;
+  background: #fff;
   border-color: var(--px-green-bright);
-  box-shadow:
-    0 0 0 2px var(--px-green-frame),
-    0 0 24px var(--px-green-glow-strong);
-  transform: scale(0.95);
+  box-shadow: 0 0 40px var(--px-green-glow-strong), 0 0 12px #fff;
 }
 
-.morse-key {
-  font-size: 32px;
-  color: var(--px-green-bright);
+@keyframes btn-fill {
+  0% { background: var(--px-green-bg); }
+  50% { background: var(--px-green-bright); }
+  100% { background: #fff; }
 }
 
 .morse-hint {

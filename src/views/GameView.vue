@@ -6,6 +6,7 @@ import { useGameState } from '@/composables/useGameState'
 import { useI18n } from '@/composables/useI18n'
 import { useInputDetector } from '@/composables/useInputDetector'
 import { useSceneTransition } from '@/composables/useSceneTransition'
+import { useGameBgm } from '@/composables/useGameBgm'
 import TimerBar from '@/components/TimerBar.vue'
 import ScoreDisplay from '@/components/ScoreDisplay.vue'
 import MissionText from '@/components/MissionText.vue'
@@ -28,7 +29,7 @@ import LockpickMission from '@/components/missions/LockpickMission.vue'
 import DecontamMission from '@/components/missions/DecontamMission.vue'
 import BloodTypeMission from '@/components/missions/BloodTypeMission.vue'
 import PowerGridMission from '@/components/missions/PowerGridMission.vue'
-import DefuseMission from '@/components/missions/DefuseMission.vue'
+
 import TriageMission from '@/components/missions/TriageMission.vue'
 import ParadropMission from '@/components/missions/ParadropMission.vue'
 import QuarantineMission from '@/components/missions/QuarantineMission.vue'
@@ -151,6 +152,7 @@ const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const { transition, afterTransition } = useSceneTransition()
+const gameBgm = useGameBgm()
 const missionArea = ref<HTMLElement | null>(null)
 
 const {
@@ -184,6 +186,10 @@ watch(missionKey, () => {
   resetTapCount()
 })
 
+watch(phase, (p) => {
+  if (p === 'GAME_OVER') gameBgm.stop()
+})
+
 function handleColorTap(correct: boolean) {
   setColorTapResult(correct)
   handleInput({ type: 'TAP', x: 0, y: 0 })
@@ -192,9 +198,11 @@ function handleColorTap(correct: boolean) {
 function handleRestart() {
   resetTapCount()
   restart()
+  gameBgm.start()
 }
 
 function handleHome() {
+  gameBgm.stop()
   transition(() => router.push('/'))
 }
 
@@ -209,12 +217,14 @@ onMounted(async () => {
     bind(missionArea.value)
   }
   await afterTransition()
+  gameBgm.start()
   startGame()
 })
 
 onUnmounted(() => {
   timer.stop()
   clearAllTimers()
+  gameBgm.stop()
 })
 </script>
 
@@ -278,11 +288,6 @@ onUnmounted(() => {
           <MorseMission
             v-else-if="mission.type === 'MORSE'"
             :morse-pattern="mission.morsePattern!"
-            @tap="handleColorTap"
-          />
-          <DefuseMission
-            v-else-if="mission.type === 'DEFUSE'"
-            :wire-count="mission.wireCount!"
             @tap="handleColorTap"
           />
           <TriageMission

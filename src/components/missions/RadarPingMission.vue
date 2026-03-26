@@ -20,7 +20,7 @@ let raf = 0
 let startTime = 0
 
 const ROTATION_SPEED = 180 // degrees per second (~2s per full rotation)
-const BLIP_APPEAR_ANGLE = 380 // appear after ~1 rotation (380 deg = 1.06 rotations)
+const BLIP_APPEAR_ANGLE = 200 // appear after ~1.1s
 const TOLERANCE = 30 // degrees tolerance for sweep-over-blip
 
 function normalizeAngle(a: number): number {
@@ -38,10 +38,12 @@ function animate(now: number) {
   const elapsed = (now - startTime) / 1000
   sweepAngle.value = (elapsed * ROTATION_SPEED) % 360
 
-  // Show blip after ~1 rotation
+  // Show blip ahead of sweep so it's always reachable
   if (!blipVisible.value && elapsed * ROTATION_SPEED >= BLIP_APPEAR_ANGLE) {
     blipVisible.value = true
-    blipAngle.value = Math.random() * 360
+    // Place blip 60~180° ahead of current sweep position
+    const ahead = 60 + Math.random() * 120
+    blipAngle.value = normalizeAngle(sweepAngle.value + ahead)
     blipRadius.value = 0.35 + Math.random() * 0.45 // 35%~80% from center
   }
 

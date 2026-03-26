@@ -25,7 +25,7 @@ export type MissionType =
   | 'DECONTAM'
   | 'BLOOD_TYPE'
   | 'POWER_GRID'
-  | 'DEFUSE'
+
   | 'TRIAGE'
   | 'PARADROP'
   | 'QUARANTINE'
@@ -306,7 +306,7 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
     type: 'WIRE_CUT',
     difficulty: 'HARD',
     generate() {
-      const count = pickRandom([2, 3])
+      const count = pickRandom([3, 4])
       return {
         type: 'WIRE_CUT',
         difficulty: 'HARD',
@@ -371,9 +371,13 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       const patterns: ('DOT' | 'DASH')[][] = [
         ['DOT', 'DOT', 'DOT'],
         ['DASH', 'DASH', 'DASH'],
-        ['DOT', 'DASH'],
-        ['DASH', 'DOT'],
+        ['DOT', 'DASH', 'DOT'],
+        ['DASH', 'DOT', 'DASH'],
         ['DOT', 'DOT', 'DASH'],
+        ['DASH', 'DOT', 'DOT'],
+        ['DOT', 'DASH', 'DOT', 'DASH'],
+        ['DASH', 'DOT', 'DASH', 'DOT'],
+        ['DOT', 'DOT', 'DASH', 'DOT'],
       ]
       const pat = pickRandom(patterns)
       return {
@@ -515,20 +519,6 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
       }
     },
   },
-  // DEFUSE - HARD
-  {
-    type: 'DEFUSE',
-    difficulty: 'HARD',
-    generate() {
-      const count = pickRandom([3, 4])
-      return {
-        type: 'DEFUSE',
-        difficulty: 'HARD',
-        text: '해체',
-        wireCount: count,
-      }
-    },
-  },
   // TRIAGE - HARD
   {
     type: 'TRIAGE',
@@ -575,13 +565,13 @@ export const MISSION_REGISTRY: MissionDefinition[] = [
     difficulty: 'HARD',
     generate() {
       const size = 3
-      const row = Math.floor(Math.random() * size)
-      const col = Math.floor(Math.random() * size)
+      const col = Math.floor(Math.random() * size) + 1
+      const row = Math.floor(Math.random() * size) + 1
       return {
         type: 'DEAD_DROP',
         difficulty: 'HARD',
-        text: `좌표 ${col + 1},${row + 1}`,
-        deadDropCoord: [row, col],
+        text: `좌표 ${col},${row}`,
+        deadDropCoord: [col, row],
         deadDropGridSize: size,
       }
     },

@@ -75,7 +75,6 @@ const en: Record<string, string> = {
   '잠금 해제': 'UNLOCK',
   '제독': 'DECONTAM',
   '전력 복구': 'RESTORE POWER',
-  '해체': 'DEFUSE',
   '분류': 'TRIAGE',
   '낙하': 'PARADROP',
   '격리': 'QUARANTINE',

@@ -16,7 +16,7 @@ const emit = defineEmits<{
 
 const containerEl = ref<HTMLElement | null>(null)
 const charge = ref(0) // 0~1
-const expectedDir = ref<'LEFT' | 'RIGHT'>('RIGHT')
+const expectedDir = ref<'LEFT' | 'RIGHT'>(Math.random() < 0.5 ? 'LEFT' : 'RIGHT')
 const brightness = ref(0.2)
 let swipeCount = 0
 let resolved = false

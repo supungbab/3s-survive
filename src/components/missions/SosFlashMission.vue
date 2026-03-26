@@ -16,27 +16,29 @@ const phase = ref<'pattern' | 'prompt' | 'expired'>('pattern')
 let resolved = false
 const timers: ReturnType<typeof setTimeout>[] = []
 
-// SOS pattern: 3 short, 3 long, 3 short
-// short flash: 100ms on, 150ms off
-// long flash: 300ms on, 150ms off
+// SOS pattern: 3 short, 3 long, 3 short (compressed to fit in game timer)
+// short flash: 80ms on, 80ms off
+// long flash: 180ms on, 80ms off
 function buildSosTimeline(): { onAt: number; offAt: number }[] {
   const events: { onAt: number; offAt: number }[] = []
-  let t = 200 // initial delay
+  let t = 100 // initial delay
 
   // 3 short
   for (let i = 0; i < 3; i++) {
-    events.push({ onAt: t, offAt: t + 100 })
-    t += 100 + 150
+    events.push({ onAt: t, offAt: t + 80 })
+    t += 80 + 80
   }
+  t += 60 // gap between groups
   // 3 long
   for (let i = 0; i < 3; i++) {
-    events.push({ onAt: t, offAt: t + 300 })
-    t += 300 + 150
+    events.push({ onAt: t, offAt: t + 180 })
+    t += 180 + 80
   }
+  t += 60
   // 3 short
   for (let i = 0; i < 3; i++) {
-    events.push({ onAt: t, offAt: t + 100 })
-    t += 100 + 150
+    events.push({ onAt: t, offAt: t + 80 })
+    t += 80 + 80
   }
   return events
 }

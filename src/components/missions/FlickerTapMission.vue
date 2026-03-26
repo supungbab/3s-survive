@@ -35,13 +35,13 @@ function scheduleFlicker() {
   targetVisible.value = false
   flickerTimer = setTimeout(() => {
     if (resolved) return
-    // Show phase: ~300ms of target visible
+    // Show phase: ~600ms of target visible
     targetVisible.value = true
     flickerTimer = setTimeout(() => {
       if (resolved) return
       scheduleFlicker()
-    }, 300)
-  }, 800)
+    }, 600)
+  }, 600)
 }
 
 function startNoise() {

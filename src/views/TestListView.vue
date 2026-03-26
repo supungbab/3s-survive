@@ -32,7 +32,6 @@ const missions: MissionInfo[] = [
   { type: 'DECONTAM', name: '오염 제거', input: '순서탭', difficulty: 'NORMAL', category: '서바이벌2' },
   { type: 'BLOOD_TYPE', name: '수혈', input: '탭', difficulty: 'NORMAL', category: '서바이벌2' },
   { type: 'POWER_GRID', name: '전력 복구', input: '순서탭', difficulty: 'NORMAL', category: '서바이벌2' },
-  { type: 'DEFUSE', name: '폭탄 해제', input: '순서탭', difficulty: 'HARD', category: '서바이벌2' },
   { type: 'TRIAGE', name: '응급 분류', input: '순서탭', difficulty: 'HARD', category: '서바이벌2' },
   { type: 'PARADROP', name: '낙하산', input: '스와이프', difficulty: 'HARD', category: '서바이벌2' },
   { type: 'QUARANTINE', name: '격리', input: '멀티탭', difficulty: 'HARD', category: '서바이벌2' },
