@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from '@/composables/useI18n'
-import { getAudioContext, ensureAudioReady } from '@/composables/audioContext'
+import { getAudioContext } from '@/composables/audioContext'
 import { useSettings } from '@/composables/useSettings'
 
 const emit = defineEmits<{ done: [] }>()
 const { t } = useI18n()
 const { soundEnabled, volume } = useSettings()
 
-const waiting = ref(true)  // 사용자 제스처 대기
 const lines = ref<{ text: string; class?: string }[]>([])
 const showMessage = ref(false)
 const messageLines = ref<string[]>([])
@@ -94,18 +93,16 @@ async function runBootSequence() {
   showCursor.value = false
 }
 
-async function finish() {
+function finish() {
+  if (phase.value === 'fade') return
   phase.value = 'fade'
-  await sleep(500)
   localStorage.setItem('3s_intro_seen', '1')
   emit('done')
 }
 
-async function startIntro() {
-  waiting.value = false
-  await ensureAudioReady()
+onMounted(async () => {
   await runBootSequence()
-}
+})
 
 function msgLineClass(line: string) {
   const isQuote = line.startsWith('"') || line.startsWith('\u201C') || line.startsWith(' ')
@@ -117,7 +114,6 @@ function msgLineClass(line: string) {
 }
 
 function handleTap() {
-  if (waiting.value) { startIntro(); return }
   if (phase.value === 'boot') return
   if (phase.value === 'fade') return
   finish()
@@ -136,13 +132,7 @@ function handleTap() {
     <div class="crt-flicker" />
     <div class="scanlines" />
 
-    <!-- 제스처 대기 화면 -->
-    <div v-if="waiting" class="waiting-screen">
-      <div class="waiting-cursor">█</div>
-      <div class="tap-hint pulse">{{ t('화면을 터치하여 시작') }}</div>
-    </div>
-
-    <div v-else class="intro-terminal">
+    <div class="intro-terminal">
       <!-- Boot lines -->
       <div class="boot-lines">
         <div
@@ -194,21 +184,6 @@ function handleTap() {
 
 .intro-screen.fade-out {
   opacity: 0;
-}
-
-/* 제스처 대기 화면 */
-.waiting-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  z-index: 20;
-}
-.waiting-cursor {
-  color: var(--px-green, #8cc890);
-  font-family: 'Mulmaru', monospace;
-  font-size: 24px;
-  animation: blink 0.8s step-end infinite;
 }
 
 /* CRT effects (reuse from MainScreen) */

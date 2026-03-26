@@ -3,21 +3,30 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useScoreStorage } from '@/composables/useScoreStorage'
 import { useSceneTransition } from '@/composables/useSceneTransition'
-import MainScreen from '@/components/MainScreen.vue'
+import TapToStart from '@/components/TapToStart.vue'
 import IntroScene from '@/components/IntroScene.vue'
+import MainScreen from '@/components/MainScreen.vue'
 
 const router = useRouter()
 const { bestScore } = useScoreStorage()
 const { transition } = useSceneTransition()
 
-const showIntro = ref(!localStorage.getItem('3s_intro_seen'))
+const screen = ref<'tap' | 'intro' | 'main'>('tap')
+
+function handleTapDone() {
+  if (!localStorage.getItem('3s_intro_seen')) {
+    transition(() => { screen.value = 'intro' })
+  } else {
+    transition(() => { screen.value = 'main' })
+  }
+}
 
 function handleIntroDone() {
-  showIntro.value = false
+  transition(() => { screen.value = 'main' })
 }
 
 function handleReplayIntro() {
-  showIntro.value = true
+  transition(() => { screen.value = 'intro' })
 }
 
 function handleStart() {
@@ -26,6 +35,7 @@ function handleStart() {
 </script>
 
 <template>
-  <IntroScene v-if="showIntro" @done="handleIntroDone" />
+  <TapToStart v-if="screen === 'tap'" @done="handleTapDone" />
+  <IntroScene v-else-if="screen === 'intro'" @done="handleIntroDone" />
   <MainScreen v-else :best-score="bestScore" @start="handleStart" @replay-intro="handleReplayIntro" />
 </template>
